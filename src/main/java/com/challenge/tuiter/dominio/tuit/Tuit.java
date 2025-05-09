@@ -2,6 +2,7 @@ package com.challenge.tuiter.dominio.tuit;
 
 import com.challenge.tuiter.dominio.tuit.excepcion.AutorInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
+import com.challenge.tuiter.dominio.usuario.Usuario;
 import lombok.Value;
 
 import java.util.UUID;
@@ -10,11 +11,11 @@ import java.util.UUID;
 public class Tuit {
   public static final int MAX_CARACTERES = 280;
   UUID id;
-  String autor;
+  Usuario autor;
   String contenido;
 
-  private Tuit(UUID id, String autor, String contenido) {
-    if (autor == null || autor.isBlank()) {
+  private Tuit(UUID id, Usuario autor, String contenido) {
+    if (autor == null) {
       throw new AutorInvalidoException();
     }
     if (contenido == null || contenido.isBlank()) {
@@ -29,7 +30,11 @@ public class Tuit {
     this.contenido = contenido;
   }
 
-  public static Tuit nuevo(String autor, String contenido) {
+  public static Tuit nuevo(Usuario autor, String contenido) {
     return new Tuit(UUID.randomUUID(), autor, contenido);
+  }
+
+  public String getAutorID() {
+    return autor.id();
   }
 }

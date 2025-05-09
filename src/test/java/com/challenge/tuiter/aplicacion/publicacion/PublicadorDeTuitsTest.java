@@ -26,9 +26,9 @@ class PublicadorDeTuitsTest {
 
     Tuit tuit = publicador.publicar(peticion);
 
-    assertEquals("autor", tuit.getAutor());
+    assertEquals("autor", tuit.getAutorID());
     assertEquals("Hola mundo", tuit.getContenido());
-    assertTrue(repositorio.findById(tuit.getAutor()).isPresent());
+    assertTrue(repositorio.findById(tuit.getAutorID()).isPresent());
   }
 
   @Test

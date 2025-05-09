@@ -2,6 +2,7 @@ package com.challenge.tuiter.dominio.tuit;
 
 import com.challenge.tuiter.dominio.tuit.excepcion.AutorInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
+import com.challenge.tuiter.dominio.usuario.Usuario;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,33 +13,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class TuitTest {
   @Test
   void creaUnTuitConAutorYContenidoValidos() {
-    Tuit tuit = Tuit.nuevo("autor", "Hola mundo");
+    Tuit tuit = Tuit.nuevo(new Usuario("autor"), "Hola mundo");
     assertNotNull(tuit.getId());
-    assertEquals("autor", tuit.getAutor());
+    assertEquals("autor", tuit.getAutorID());
     assertEquals("Hola mundo", tuit.getContenido());
   }
 
   @Test
   void creaDosTuitsValidosConIdDiferente() {
-    Tuit unTuit = Tuit.nuevo("autor", "Hola mundo");
-    Tuit otroTuit = Tuit.nuevo("autor", "Hola mundo");
+    Tuit unTuit = Tuit.nuevo(new Usuario("autor"), "Hola mundo");
+    Tuit otroTuit = Tuit.nuevo(new Usuario("autor"), "Hola mundo");
 
     assertNotEquals(unTuit.getId(), otroTuit.getId());
   }
 
   @Test
   void noPermiteContenidoVacio() {
-    assertThrows(ContenidoInvalidoException.class, () -> Tuit.nuevo("autor", ""));
+    assertThrows(ContenidoInvalidoException.class, () -> Tuit.nuevo(new Usuario("autor"), ""));
   }
 
   @Test
   void noPermiteContenidoConMasDe280Caracteres() {
     String largo = "a".repeat(281);
-    assertThrows(ContenidoInvalidoException.class, () -> Tuit.nuevo("autor", largo));
+    assertThrows(ContenidoInvalidoException.class, () -> Tuit.nuevo(new Usuario("autor"), largo));
   }
 
   @Test
   void noPermiteAutorVacio() {
-    assertThrows(AutorInvalidoException.class, () -> Tuit.nuevo("", "contenido"));
+    assertThrows(AutorInvalidoException.class, () -> Tuit.nuevo(null, "contenido"));
   }
 }
