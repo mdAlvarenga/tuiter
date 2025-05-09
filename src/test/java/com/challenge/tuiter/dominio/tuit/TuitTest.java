@@ -5,6 +5,7 @@ import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,6 +16,14 @@ class TuitTest {
     assertNotNull(tuit.getId());
     assertEquals("autor", tuit.getAutor());
     assertEquals("Hola mundo", tuit.getContenido());
+  }
+
+  @Test
+  void creaDosTuitsValidosConIdDiferente() {
+    Tuit unTuit = Tuit.nuevo("autor", "Hola mundo");
+    Tuit otroTuit = Tuit.nuevo("autor", "Hola mundo");
+
+    assertNotEquals(unTuit.getId(), otroTuit.getId());
   }
 
   @Test

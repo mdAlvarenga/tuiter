@@ -1,9 +1,11 @@
 package com.challenge.tuiter.dominio.seguimiento;
 
 import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
+import com.challenge.tuiter.dominio.tuit.Tuit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SeguimientoTest {
@@ -13,6 +15,14 @@ class SeguimientoTest {
 
     assertEquals("unUsuario", seguimiento.getSeguidorId());
     assertEquals("otroUsuario", seguimiento.getSeguidoId());
+  }
+
+  @Test
+  void creaDosTuitsValidosConIdDiferente() {
+    Tuit unTuit = Tuit.nuevo("autor", "Hola mundo");
+    Tuit otroTuit = Tuit.nuevo("autor", "Hola mundo");
+
+    assertNotEquals(unTuit.getId(), otroTuit.getId());
   }
 
   @Test
