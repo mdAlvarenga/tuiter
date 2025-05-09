@@ -21,8 +21,8 @@ class BuscadorDeSeguidoresTest {
 
   @Test
   void devuelveListaDeSeguidoresParaUnUsuario() {
-    repositorio.guardar(new Seguimiento("ana", "juan"));
-    repositorio.guardar(new Seguimiento("pablo", "juan"));
+    repositorio.guardar(Seguimiento.nuevo("ana", "juan"));
+    repositorio.guardar(Seguimiento.nuevo("pablo", "juan"));
 
     var seguidores = buscador.buscarSeguidoresDe("juan");
 

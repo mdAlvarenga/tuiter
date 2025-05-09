@@ -9,14 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class SeguimientoTest {
   @Test
   void unUsuarioSigueAOtroyFormaUnaRelacionValida() {
-    Seguimiento seguimiento = new Seguimiento("unUsuario", "otroUsuario");
+    Seguimiento seguimiento = Seguimiento.nuevo("unUsuario", "otroUsuario");
 
-    assertEquals("unUsuario", seguimiento.seguidorId());
-    assertEquals("otroUsuario", seguimiento.seguidoId());
+    assertEquals("unUsuario", seguimiento.getSeguidorId());
+    assertEquals("otroUsuario", seguimiento.getSeguidoId());
   }
 
   @Test
   void unUsuarioNoPuedeSeguirseASiMismo() {
-    assertThrows(SeguimientoInvalidoException.class, () -> new Seguimiento("unUsuario", "unUsuario"));
+    assertThrows(SeguimientoInvalidoException.class,
+      () -> Seguimiento.nuevo("unUsuario", "unUsuario"));
   }
 }

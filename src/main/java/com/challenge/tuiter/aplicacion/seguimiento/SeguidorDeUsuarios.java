@@ -11,7 +11,7 @@ public class SeguidorDeUsuarios {
   }
 
   public Seguimiento seguirDesde(PeticionDeSeguimiento peticion) {
-    Seguimiento seguimiento = new Seguimiento(peticion.seguidorId(), peticion.seguidoId());
+    Seguimiento seguimiento = Seguimiento.nuevo(peticion.seguidorId(), peticion.seguidoId());
     this.repositorio.guardar(seguimiento);
     return seguimiento;
   }

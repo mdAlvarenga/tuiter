@@ -1,5 +1,6 @@
 package com.challenge.tuiter.aplicacion.seguimiento;
 
+import com.challenge.tuiter.dominio.seguimiento.RelacionDeSeguimiento;
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
 import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
@@ -25,7 +26,7 @@ class SeguidorDeUsuariosTest {
 
     seguidor.seguirDesde(peticion);
 
-    assertTrue(repositorio.existe(new Seguimiento("user123", "user456")));
+    assertTrue(repositorio.existe(new RelacionDeSeguimiento("user123", "user456")));
   }
 
   @Test
