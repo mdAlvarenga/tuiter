@@ -11,7 +11,7 @@ public class PublicadorDeTuits {
   }
 
   public Tuit publicar(PeticionDePublicarTuit peticion) {
-    Tuit tuit = new Tuit(peticion.autor(), peticion.contenido());
+    Tuit tuit = Tuit.nuevo(peticion.autor(), peticion.contenido());
     this.repositorio.guardar(tuit);
     return tuit;
   }

@@ -1,6 +1,6 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-import com.challenge.tuiter.dominio.tuit.ContenidoInvalidoException;
+import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.infraestructura.memoria.TuitsEnMemoria;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +26,9 @@ class PublicadorDeTuitsTest {
 
     Tuit tuit = publicador.publicar(peticion);
 
-    assertEquals("autor", tuit.autor());
-    assertEquals("Hola mundo", tuit.contenido());
-    assertTrue(repositorio.findById(tuit.autor()).isPresent());
+    assertEquals("autor", tuit.getAutor());
+    assertEquals("Hola mundo", tuit.getContenido());
+    assertTrue(repositorio.findById(tuit.getAutor()).isPresent());
   }
 
   @Test

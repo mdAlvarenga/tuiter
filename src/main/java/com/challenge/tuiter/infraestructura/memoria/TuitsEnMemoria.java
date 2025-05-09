@@ -12,7 +12,7 @@ public class TuitsEnMemoria implements RepositorioDeTuits {
 
   @Override
   public Tuit guardar(Tuit tuit) {
-    store.put(tuit.autor(), tuit);
+    store.put(tuit.getAutor(), tuit);
     return tuit;
   }
 

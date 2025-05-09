@@ -1,5 +1,6 @@
 package com.challenge.tuiter.dominio.seguimiento;
 
+import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,7 +1,7 @@
 package com.challenge.tuiter.aplicacion.seguimiento;
 
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
-import com.challenge.tuiter.dominio.seguimiento.SeguimientoInvalidoException;
+import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
 import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
