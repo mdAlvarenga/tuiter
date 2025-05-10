@@ -51,7 +51,6 @@ class SeguimientosJpaAdapterTest {
 
     assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(SEGUIDOR, SEGUIDO_1)));
     assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(SEGUIDOR, SEGUIDO_2)));
-
     List<Usuario> seguidos = repoConsulta.seguidosPor(SEGUIDOR);
     assertEquals(2, seguidos.size());
     assertTrue(seguidos.contains(new Usuario(SEGUIDO_1)));

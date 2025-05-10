@@ -42,6 +42,10 @@ public class Tuit {
     return new Tuit(UUID.randomUUID(), autor, contenido, Instant.now(clock));
   }
 
+  public static Tuit desde(UUID id, Usuario usuario, String contenido, Instant instanteDeCreacion) {
+    return new Tuit(id, usuario, contenido, instanteDeCreacion);
+  }
+
   public String getAutorID() {
     return autor.id();
   }
