@@ -1,18 +1,20 @@
 package com.challenge.tuiter.infraestructura.memoria;
 
 import com.challenge.tuiter.dominio.seguimiento.RelacionDeSeguimiento;
-import com.challenge.tuiter.dominio.seguimiento.RepositorioDeSeguimientos;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
+import com.challenge.tuiter.dominio.usuario.Usuario;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SeguimientosEnMemoria implements RepositorioDeSeguimientos {
+public class SeguimientosEnMemoriaDeConsulta implements RepositorioDeConsultaDeSeguimientos, RepositorioDeRegistroDeSeguimientos {
   private final Set<Seguimiento> relaciones = new HashSet<>();
 
   @Override
-  public void guardar(Seguimiento seguimiento) {
+  public void registrar(Seguimiento seguimiento) {
     relaciones.add(seguimiento);
   }
 
@@ -23,8 +25,8 @@ public class SeguimientosEnMemoria implements RepositorioDeSeguimientos {
   }
 
   @Override
-  public List<String> seguidoresDe(String seguidoId) {
-    return relaciones.stream().filter(s -> s.getSeguidoId().equals(seguidoId))
-                     .map(Seguimiento::getSeguidorId).toList();
+  public List<Usuario> seguidosPor(String seguidorId) {
+    return relaciones.stream().filter(s -> s.esSeguidor(seguidorId))
+                     .map(s -> new Usuario(s.getSeguidoId())).toList();
   }
 }

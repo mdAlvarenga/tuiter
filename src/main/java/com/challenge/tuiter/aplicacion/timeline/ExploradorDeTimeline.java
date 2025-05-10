@@ -1,5 +1,6 @@
 package com.challenge.tuiter.aplicacion.timeline;
 
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeTimeline;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
@@ -7,14 +8,17 @@ import com.challenge.tuiter.dominio.usuario.Usuario;
 import java.util.List;
 
 public class ExploradorDeTimeline {
-  private final RepositorioDeTimeline repositorio;
+  private final RepositorioDeTimeline repoTimeline;
+  private final RepositorioDeConsultaDeSeguimientos repoSeguimientos;
 
-  public ExploradorDeTimeline(RepositorioDeTimeline repositorio) {
-    this.repositorio = repositorio;
+  public ExploradorDeTimeline(RepositorioDeTimeline repoTimeline, RepositorioDeConsultaDeSeguimientos repoSeguimientos) {
+    this.repoTimeline = repoTimeline;
+    this.repoSeguimientos = repoSeguimientos;
   }
 
   public List<Tuit> explorarPara(Usuario usuario) {
-    return repositorio.timelineDe(usuario).stream().sorted((t1, t2) -> t2.esPosteriorA(t1))
-                      .toList();
+    List<Usuario> seguidos = repoSeguimientos.seguidosPor(usuario.id());
+    return repoTimeline.timelineDe(seguidos).stream().sorted((t1, t2) -> t2.esPosteriorA(t1))
+                       .toList();
   }
 }

@@ -1,7 +1,8 @@
 package com.challenge.tuiter.aplicacion.seguimiento;
 
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
-import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
+import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoriaDeConsulta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,23 +11,23 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BuscadorDeSeguidoresTest {
-  private SeguimientosEnMemoria repositorio;
+  private SeguimientosEnMemoriaDeConsulta repositorio;
   private BuscadorDeSeguidores buscador;
 
   @BeforeEach
   void setUp() {
-    repositorio = new SeguimientosEnMemoria();
+    repositorio = new SeguimientosEnMemoriaDeConsulta();
     buscador = new BuscadorDeSeguidores(repositorio);
   }
 
   @Test
-  void devuelveListaDeSeguidoresParaUnUsuario() {
-    repositorio.guardar(Seguimiento.nuevo("ana", "juan"));
-    repositorio.guardar(Seguimiento.nuevo("pablo", "juan"));
+  void devuelveListaDeSeguidosParaUnUsuario() {
+    repositorio.registrar(Seguimiento.nuevo("juan", "ana"));
+    repositorio.registrar(Seguimiento.nuevo("juan", "pablo"));
 
     var seguidores = buscador.buscarSeguidoresDe("juan");
 
-    assertEquals(Stream.of("ana", "pablo").sorted().toList(),
+    assertEquals(Stream.of(new Usuario("ana"), new Usuario("pablo")).sorted().toList(),
       seguidores.stream().sorted().toList());
   }
 }

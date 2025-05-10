@@ -1,9 +1,8 @@
 package com.challenge.tuiter.aplicacion.seguimiento;
 
 import com.challenge.tuiter.dominio.seguimiento.RelacionDeSeguimiento;
-import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
-import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
+import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoriaDeConsulta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SeguidorDeUsuariosTest {
-  private SeguimientosEnMemoria repositorio;
+  private SeguimientosEnMemoriaDeConsulta repositorio;
   private SeguidorDeUsuarios seguidor;
 
   @BeforeEach
   void setUp() {
-    repositorio = new SeguimientosEnMemoria();
+    repositorio = new SeguimientosEnMemoriaDeConsulta();
     seguidor = new SeguidorDeUsuarios(repositorio);
   }
 

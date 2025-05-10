@@ -7,17 +7,16 @@ import com.challenge.tuiter.dominio.usuario.Usuario;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class TimelineEnMemoria implements RepositorioDeTimeline, RepositorioDeEscrituraDeTimeline {
   private final Map<Usuario, List<Tuit>> timelines = new HashMap<>();
 
   @Override
-  public List<Tuit> timelineDe(Usuario usuario) {
-    return timelines.getOrDefault(usuario, List.of());
+  public List<Tuit> timelineDe(List<Usuario> autores) {
+    return autores.stream().flatMap(autor -> timelines.getOrDefault(autor, List.of()).stream())
+                  .toList();
   }
 
   public void agregarTuit(Tuit tuit) {

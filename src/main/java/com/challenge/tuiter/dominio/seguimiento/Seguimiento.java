@@ -27,4 +27,8 @@ public class Seguimiento {
   public static Seguimiento desde(String seguidorId, String seguidoId) {
     return new Seguimiento(UUID.randomUUID(), seguidorId, seguidoId);
   }
+
+  public boolean esSeguidor(String otroSeguidorId) {
+    return seguidorId.equals(otroSeguidorId);
+  }
 }

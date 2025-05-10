@@ -1,17 +1,18 @@
 package com.challenge.tuiter.aplicacion.seguimiento;
 
-import com.challenge.tuiter.dominio.seguimiento.RepositorioDeSeguimientos;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
+import com.challenge.tuiter.dominio.usuario.Usuario;
 
 import java.util.List;
 
 public class BuscadorDeSeguidores {
-  private final RepositorioDeSeguimientos repositorio;
+  private final RepositorioDeConsultaDeSeguimientos repositorio;
 
-  public BuscadorDeSeguidores(RepositorioDeSeguimientos repositorio) {
+  public BuscadorDeSeguidores(RepositorioDeConsultaDeSeguimientos repositorio) {
     this.repositorio = repositorio;
   }
 
-  public List<String> buscarSeguidoresDe(String seguidoId) {
-    return repositorio.seguidoresDe(seguidoId).stream().sorted().toList();
+  public List<Usuario> buscarSeguidoresDe(String seguidoId) {
+    return repositorio.seguidosPor(seguidoId).stream().sorted().toList();
   }
 }
