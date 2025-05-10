@@ -16,11 +16,11 @@ class SeguidorDeUsuariosTest {
   @BeforeEach
   void setUp() {
     repositorio = new SeguimientosEnMemoriaDeConsulta();
-    seguidor = new SeguidorDeUsuarios(repositorio);
+    seguidor = new SeguidorDeUsuarios(repositorio, repositorio);
   }
 
   @Test
-  void sigueAUnUsuarioCorrectamente() {
+  void siUnUsuarioSigueAOtroCorrectamenteExisteLaRelacionDeSeguimiento() {
     var peticion = new PeticionDeSeguimiento("user123", "user456");
 
     seguidor.seguirDesde(peticion);
@@ -29,8 +29,16 @@ class SeguidorDeUsuariosTest {
   }
 
   @Test
-  void lanzaExcepcionSiElSeguimientoEsInvalido() {
+  void lanzaExcepcionSiUnUsuarioIntentaSeguirseASiMismo() {
     var peticion = new PeticionDeSeguimiento("unUsuario", "unUsuario");
+
+    assertThrows(SeguimientoInvalidoException.class, () -> seguidor.seguirDesde(peticion));
+  }
+
+  @Test
+  void lanzaExcepcionSiUnUsuarioIntentaSeguirAOtrOUsuarioYaSeguido() {
+    var peticion = new PeticionDeSeguimiento("unUsuario", "otroUsuario");
+    seguidor.seguirDesde(peticion);
 
     assertThrows(SeguimientoInvalidoException.class, () -> seguidor.seguirDesde(peticion));
   }

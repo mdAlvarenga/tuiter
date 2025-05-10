@@ -1,6 +1,5 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.infraestructura.memoria.GuardadoTuitsEnMemoria;
@@ -28,7 +27,7 @@ class PublicadorDeTuitsTest {
   }
 
   @Test
-  void publicaUnTuitCorrectamente() {
+  void publicaUnTuitYSeGeneraCorrectamente() {
     var peticion = new PeticionDePublicarTuit("autor", "Hola mundo");
 
     Tuit tuit = publicador.publicar(peticion);
@@ -42,6 +41,20 @@ class PublicadorDeTuitsTest {
   void lanzaExcepcionSiElContenidoEsInvalido() {
     var largo = "a".repeat(281);
     var peticion = new PeticionDePublicarTuit("autor", largo);
+
+    assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+  }
+
+  @Test
+  void lanzaExcepcionSiElContenidoEstaEnBlanco() {
+    var peticion = new PeticionDePublicarTuit("autor", " ");
+
+    assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+  }
+
+  @Test
+  void lanzaExcepcionSiElContenidoEsEstaVacio() {
+    var peticion = new PeticionDePublicarTuit("autor", null);
 
     assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
   }

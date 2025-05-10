@@ -12,7 +12,7 @@ public class BuscadorDeSeguidores {
     this.repositorio = repositorio;
   }
 
-  public List<Usuario> buscarSeguidoresDe(String seguidoId) {
-    return repositorio.seguidosPor(seguidoId).stream().sorted().toList();
+  public List<Usuario> buscarSeguidosDe(String seguidorId) {
+    return repositorio.seguidosPor(seguidorId).stream().sorted().toList();
   }
 }

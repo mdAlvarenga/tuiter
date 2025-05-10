@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExploradorDeTimelineTest {
@@ -29,8 +30,19 @@ class ExploradorDeTimelineTest {
   }
 
   @Test
-  void devuelveTimelineVacioParaUnUsuarioSiNoHayTuits() {
+  void devuelveTimelineVacioParaUnUsuarioQueNoSigueANadie() {
     var resultado = explorador.explorarPara(new Usuario("autor"));
+
+    assertTrue(resultado.isEmpty());
+  }
+
+  @Test
+  void devuelveTimelineVacioParaUnUsuarioSiLosSeguidosNoTienenTuits() {
+    Usuario seguidor = new Usuario("seguidor");
+    Usuario seguido = new Usuario("seguido");
+    seguir(seguidor, seguido);
+
+    var resultado = explorador.explorarPara(seguidor);
 
     assertTrue(resultado.isEmpty());
   }
@@ -55,6 +67,28 @@ class ExploradorDeTimelineTest {
     assertContieneOrdenadosExactamenteTuitsDe(resultado, seguido2, seguido1);
     assertTrue(resultado.stream().noneMatch(t -> t.perteneceA(noSeguido)));
   }
+
+  @Test
+  void tuitsConMismaFechaSeDevuelvenSinError() {
+    Usuario juan = new Usuario("juan");
+    Usuario pablo = new Usuario("pablo");
+    Usuario seguidor = new Usuario("seguidor");
+
+    Instant fecha = Instant.parse("2025-05-10T12:00:00Z");
+
+    Tuit tuitJuan = Tuit.nuevo(juan, "hola", Clock.fixed(fecha, ZoneOffset.UTC));
+    Tuit tuitPablo = Tuit.nuevo(pablo, "chau", Clock.fixed(fecha, ZoneOffset.UTC));
+    seguir(seguidor, juan);
+    seguir(seguidor, pablo);
+    agregarTuits(tuitJuan, tuitPablo);
+
+    List<Tuit> resultado = explorador.explorarPara(seguidor);
+
+    assertEquals(2, resultado.size());
+    assertTrue(resultado.contains(tuitJuan));
+    assertTrue(resultado.contains(tuitPablo));
+  }
+
 
   private void guardarTuitsPara(Usuario noSeguido, Usuario seguido1, Usuario seguido2) {
     Tuit tuitNoSeguido = tuitDe(noSeguido, "Hola soy leon", "2025-05-01T10:00:00Z");
