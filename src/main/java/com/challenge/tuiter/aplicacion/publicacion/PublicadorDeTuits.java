@@ -1,16 +1,16 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-import com.challenge.tuiter.dominio.tuit.RepositorioDeTuits;
+import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 
 import java.time.Clock;
 
 public class PublicadorDeTuits {
-  private final RepositorioDeTuits repositorio;
+  private final RepositorioDeGuardadoTuits repositorio;
   private final Clock clock;
 
-  public PublicadorDeTuits(RepositorioDeTuits repositorio, Clock clock) {
+  public PublicadorDeTuits(RepositorioDeGuardadoTuits repositorio, Clock clock) {
     this.repositorio = repositorio;
     this.clock = clock;
   }

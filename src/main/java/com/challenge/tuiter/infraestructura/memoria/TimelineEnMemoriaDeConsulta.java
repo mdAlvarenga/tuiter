@@ -1,7 +1,7 @@
 package com.challenge.tuiter.infraestructura.memoria;
 
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
-import com.challenge.tuiter.dominio.timeline.RepositorioDeTimeline;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TimelineEnMemoria implements RepositorioDeTimeline, RepositorioDeEscrituraDeTimeline {
+public class TimelineEnMemoriaDeConsulta implements RepositorioDeConsultaDeTimeline, RepositorioDeEscrituraDeTimeline {
   private final Map<Usuario, List<Tuit>> timelines = new HashMap<>();
 
   @Override

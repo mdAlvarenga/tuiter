@@ -4,7 +4,7 @@ import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoriaDeConsulta;
-import com.challenge.tuiter.infraestructura.memoria.TimelineEnMemoria;
+import com.challenge.tuiter.infraestructura.memoria.TimelineEnMemoriaDeConsulta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExploradorDeTimelineTest {
   private ExploradorDeTimeline explorador;
-  private TimelineEnMemoria repoDeTimeLine;
+  private TimelineEnMemoriaDeConsulta repoDeTimeLine;
   private SeguimientosEnMemoriaDeConsulta repoDeSeguimientos;
 
   @BeforeEach
   void setUp() {
-    repoDeTimeLine = new TimelineEnMemoria();
+    repoDeTimeLine = new TimelineEnMemoriaDeConsulta();
     repoDeSeguimientos = new SeguimientosEnMemoriaDeConsulta();
     explorador = new ExploradorDeTimeline(repoDeTimeLine, repoDeSeguimientos);
   }

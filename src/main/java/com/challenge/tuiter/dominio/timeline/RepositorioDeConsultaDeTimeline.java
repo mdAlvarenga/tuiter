@@ -5,6 +5,6 @@ import com.challenge.tuiter.dominio.usuario.Usuario;
 
 import java.util.List;
 
-public interface RepositorioDeTimeline {
+public interface RepositorioDeConsultaDeTimeline {
   List<Tuit> timelineDe(List<Usuario> autoresIds);
 }
