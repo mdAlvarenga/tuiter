@@ -1,9 +1,9 @@
 package com.challenge.tuiter.infraestructura.timeline.postgresql;
 
-import com.challenge.tuiter.dominio.tuit.Tuit;
-import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
+import com.challenge.tuiter.dominio.tuit.Tuit;
+import com.challenge.tuiter.dominio.usuario.Usuario;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,9 +25,7 @@ public class TimelineJpaAdapter implements RepositorioDeConsultaDeTimeline, Repo
   @Override
   public List<Tuit> timelineDe(List<Usuario> autoresIds) {
     List<String> ids = autoresIds.stream().map(Usuario::id).toList();
-    return jpa.findAllByPropietarioIdIn(ids).stream()
-      .map(TimelineMapper::aDominio)
-      .toList();
+    return jpa.findAllByPropietarioIdIn(ids).stream().map(TimelineMapper::aDominio).toList();
 
   }
 }

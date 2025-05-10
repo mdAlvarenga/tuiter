@@ -1,8 +1,8 @@
 package com.challenge.tuiter.infraestructura.tuit.postgresql;
 
-import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
+import com.challenge.tuiter.dominio.tuit.Tuit;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

@@ -56,8 +56,7 @@ class TuitTest {
 
   @Test
   void noPermiteAutorVacio() {
-    assertThrows(AutorInvalidoException.class,
-      () -> Tuit.nuevo(null, "contenido", fixedClock));
+    assertThrows(AutorInvalidoException.class, () -> Tuit.nuevo(null, "contenido", fixedClock));
   }
 
   @Test

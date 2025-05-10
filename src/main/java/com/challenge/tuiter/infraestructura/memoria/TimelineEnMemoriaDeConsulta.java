@@ -1,7 +1,7 @@
 package com.challenge.tuiter.infraestructura.memoria;
 
-import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 
