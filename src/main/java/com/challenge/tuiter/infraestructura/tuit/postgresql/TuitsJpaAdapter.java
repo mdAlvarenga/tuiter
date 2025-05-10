@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public class TuitsJpaAdapter implements RepositorioDeGuardadoTuits, RepositorioDeBusquedaTuits {
-
   private final TuitJpaRepository jpa;
 
   public TuitsJpaAdapter(TuitJpaRepository jpa) {
