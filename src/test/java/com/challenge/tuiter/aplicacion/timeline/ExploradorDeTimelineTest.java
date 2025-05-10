@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExploradorDeTimelineTest {
@@ -37,7 +36,7 @@ class ExploradorDeTimelineTest {
   }
 
   @Test
-  void devuelveSoloTuitsDeUsuariosSeguidos() {
+  void devuelveSoloTuitsDeUsuariosSeguidosOrdenadosDeManeraDescendente() {
     Usuario noSeguido = new Usuario("noSeguido");
     Usuario seguido1 = new Usuario("juan");
     Usuario seguido2 = new Usuario("pablo");
@@ -53,23 +52,22 @@ class ExploradorDeTimelineTest {
     List<Tuit> resultado = explorador.explorarPara(seguidor);
 
 
-    assertContieneExactamenteTuitsDe(resultado, seguido1, seguido2);
+    assertContieneOrdenadosExactamenteTuitsDe(resultado, seguido2, seguido1);
     assertTrue(resultado.stream().noneMatch(t -> t.perteneceA(noSeguido)));
   }
 
   private void guardarTuitsPara(Usuario noSeguido, Usuario seguido1, Usuario seguido2) {
     Tuit tuitNoSeguido = tuitDe(noSeguido, "Hola soy leon", "2025-05-01T10:00:00Z");
-    Tuit tuit1 = tuitDe(seguido1, "Hola soy juan", "2025-05-01T11:00:00Z");
-    Tuit tuit2 = tuitDe(seguido2, "Hola soy pablo", "2025-05-01T12:00:00Z");
-    agregarTuits(tuitNoSeguido, tuit1, tuit2);
+    Tuit tuitAntiguo = tuitDe(seguido1, "Hola soy juan", "2025-05-01T11:00:00Z");
+    Tuit tuitReciente = tuitDe(seguido2, "Hola soy pablo", "2025-05-01T12:00:00Z");
+    agregarTuits(tuitNoSeguido, tuitAntiguo, tuitReciente);
   }
 
-  void assertContieneExactamenteTuitsDe(List<Tuit> tuits, Usuario... autoresEsperados) {
-    var autores = Arrays.stream(autoresEsperados).toList();
-    assertEquals(autores.size(), tuits.size());
-    for (Usuario autor : autores) {
-      assertTrue(tuits.stream().anyMatch(t -> t.perteneceA(autor)), "Falta tuit de: " + autor);
-    }
+  void assertContieneOrdenadosExactamenteTuitsDe(List<Tuit> tuits, Usuario... autoresEsperados) {
+    assertThat(tuits).isSortedAccordingTo(
+      (t1, t2) -> t2.getInstanteDeCreacion().compareTo(t1.getInstanteDeCreacion()));
+
+    assertThat(tuits).extracting(Tuit::getAutor).containsExactly(autoresEsperados);
   }
 
   private void seguir(Usuario seguidor, Usuario seguido) {
