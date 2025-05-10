@@ -24,11 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Testcontainers
 @ActiveProfiles("test")
 class SeguimientosJpaAdapterTest {
+  public static final String SEGUIDOR = "juan";
+  public static final String SEGUIDO_1 = "ana";
+  public static final String SEGUIDO_2 = "pablo";
   @Container
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
-  private final String seguidor = "juan";
-  private final String seguido1 = "ana";
-  private final String seguido2 = "pablo";
   @Autowired
   RepositorioDeRegistroDeSeguimientos repoGuardar;
   @Autowired
@@ -43,18 +43,18 @@ class SeguimientosJpaAdapterTest {
 
   @Test
   void guardaSeguimientosYConsultaQueExistanEnRepositorios() {
-    Seguimiento seguimiento1 = Seguimiento.nuevo(seguidor, seguido1);
-    Seguimiento seguimiento2 = Seguimiento.nuevo(seguidor, seguido2);
+    Seguimiento seguimiento1 = Seguimiento.nuevo(SEGUIDOR, SEGUIDO_1);
+    Seguimiento seguimiento2 = Seguimiento.nuevo(SEGUIDOR, SEGUIDO_2);
 
     repoGuardar.registrar(seguimiento1);
     repoGuardar.registrar(seguimiento2);
 
-    assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(seguidor, seguido1)));
-    assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(seguidor, seguido2)));
+    assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(SEGUIDOR, SEGUIDO_1)));
+    assertTrue(repoConsulta.existe(new RelacionDeSeguimiento(SEGUIDOR, SEGUIDO_2)));
 
-    List<Usuario> seguidos = repoConsulta.seguidosPor(seguidor);
+    List<Usuario> seguidos = repoConsulta.seguidosPor(SEGUIDOR);
     assertEquals(2, seguidos.size());
-    assertTrue(seguidos.contains(new Usuario(seguido1)));
-    assertTrue(seguidos.contains(new Usuario(seguido2)));
+    assertTrue(seguidos.contains(new Usuario(SEGUIDO_1)));
+    assertTrue(seguidos.contains(new Usuario(SEGUIDO_2)));
   }
 }
