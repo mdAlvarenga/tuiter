@@ -2,9 +2,12 @@ package com.challenge.tuiter.dominio.tuit;
 
 import com.challenge.tuiter.dominio.tuit.excepcion.AutorInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
+import com.challenge.tuiter.dominio.tuit.excepcion.RelojInvalidoException;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import lombok.Value;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.UUID;
 
 @Value
@@ -13,8 +16,9 @@ public class Tuit {
   UUID id;
   Usuario autor;
   String contenido;
+  Instant instanteDeCreacion;
 
-  private Tuit(UUID id, Usuario autor, String contenido) {
+  private Tuit(UUID id, Usuario autor, String contenido, Instant instanteDeCreacion) {
     if (autor == null) {
       throw new AutorInvalidoException();
     }
@@ -28,13 +32,25 @@ public class Tuit {
     this.id = id;
     this.autor = autor;
     this.contenido = contenido;
+    this.instanteDeCreacion = instanteDeCreacion;
   }
 
-  public static Tuit nuevo(Usuario autor, String contenido) {
-    return new Tuit(UUID.randomUUID(), autor, contenido);
+  public static Tuit nuevo(Usuario autor, String contenido, Clock clock) {
+    if (clock == null) {
+      throw new RelojInvalidoException();
+    }
+    return new Tuit(UUID.randomUUID(), autor, contenido, Instant.now(clock));
   }
 
   public String getAutorID() {
     return autor.id();
+  }
+
+  public boolean perteneceA(Usuario usuario) {
+    return autor.equals(usuario);
+  }
+
+  public int esPosteriorA(Tuit otroTuit) {
+    return this.instanteDeCreacion.compareTo(otroTuit.instanteDeCreacion);
   }
 }
