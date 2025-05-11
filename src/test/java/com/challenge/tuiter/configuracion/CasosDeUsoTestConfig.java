@@ -3,6 +3,7 @@ package com.challenge.tuiter.configuracion;
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
 import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
 import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
+import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -37,5 +38,10 @@ public class CasosDeUsoTestConfig {
   @Bean
   public BuscadorDeSeguidores buscadorDeSeguidores() {
     return Mockito.mock(BuscadorDeSeguidores.class);
+  }
+
+  @Bean
+  public ExploradorDeTimeline exploradorDeTimeline() {
+    return Mockito.mock(ExploradorDeTimeline.class);
   }
 }

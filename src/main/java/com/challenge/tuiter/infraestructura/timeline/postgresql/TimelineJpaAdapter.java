@@ -26,6 +26,5 @@ public class TimelineJpaAdapter implements RepositorioDeConsultaDeTimeline, Repo
   public List<Tuit> timelineDe(List<Usuario> autoresIds) {
     List<String> ids = autoresIds.stream().map(Usuario::id).toList();
     return jpa.findAllByPropietarioIdIn(ids).stream().map(TimelineMapper::aDominio).toList();
-
   }
 }

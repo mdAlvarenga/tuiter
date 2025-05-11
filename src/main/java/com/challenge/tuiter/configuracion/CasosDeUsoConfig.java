@@ -3,8 +3,10 @@ package com.challenge.tuiter.configuracion;
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
 import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
 import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
+import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.infraestructura.seguimiento.postgresql.SeguimientosJpaAdapter;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitJpaRepository;
@@ -48,6 +50,11 @@ public class CasosDeUsoConfig {
   @Bean
   public BuscadorDeSeguidores buscadorDeSeguidores(RepositorioDeConsultaDeSeguimientos repositorio) {
     return new BuscadorDeSeguidores(repositorio);
+  }
+
+  @Bean
+  public ExploradorDeTimeline exploradorDeTimeline(RepositorioDeConsultaDeTimeline repoTimeline, RepositorioDeConsultaDeSeguimientos repoSeguimientos) {
+    return new ExploradorDeTimeline(repoTimeline, repoSeguimientos);
   }
 
   @Bean
