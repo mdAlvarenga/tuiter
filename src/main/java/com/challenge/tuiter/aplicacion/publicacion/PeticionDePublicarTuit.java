@@ -1,4 +1,4 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-public record PeticionDePublicarTuit(String autor, String contenido) {}
+public record PeticionDePublicarTuit(String autorId, String contenido) {}
 
