@@ -75,7 +75,7 @@ class ControladorDeSeguimientosTest {
     var usuario1 = new Usuario("carlos");
     var usuario2 = new Usuario("lucia");
 
-    when(buscador.buscarSeguidosDe("juan")).thenReturn(List.of(usuario1, usuario2));
+    when(buscador.buscarSeguidosDe(new Usuario("juan"))).thenReturn(List.of(usuario1, usuario2));
 
     mockMvc.perform(get("/seguimientos/juan/seguidos")).andExpect(status().isOk())
            .andExpect(jsonPath("$[0].usuarioId").value("carlos"))

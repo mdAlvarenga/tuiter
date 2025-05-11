@@ -7,6 +7,7 @@ import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.infraestructura.seguimiento.postgresql.SeguimientosJpaAdapter;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitJpaRepository;
@@ -23,8 +24,8 @@ import java.time.Clock;
 @Profile("!test")
 public class CasosDeUsoConfig {
   @Bean
-  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, Clock clock) {
-    return new PublicadorDeTuits(repositorio, clock);
+  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, Clock clock) {
+    return new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, clock);
   }
 
   @Bean

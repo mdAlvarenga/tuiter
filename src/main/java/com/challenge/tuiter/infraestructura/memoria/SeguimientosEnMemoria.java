@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SeguimientosEnMemoriaDeConsulta implements RepositorioDeConsultaDeSeguimientos, RepositorioDeRegistroDeSeguimientos {
+public class SeguimientosEnMemoria implements RepositorioDeConsultaDeSeguimientos, RepositorioDeRegistroDeSeguimientos {
   private final Set<Seguimiento> relaciones = new HashSet<>();
 
   @Override
@@ -25,8 +25,14 @@ public class SeguimientosEnMemoriaDeConsulta implements RepositorioDeConsultaDeS
   }
 
   @Override
-  public List<Usuario> seguidosPor(String seguidorId) {
-    return relaciones.stream().filter(s -> s.esSeguidor(seguidorId))
+  public List<Usuario> seguidoresDe(Usuario usuario) {
+    return relaciones.stream().filter(s -> s.esSeguidorDe(usuario.id()))
+                     .map(s -> new Usuario(s.getSeguidorId())).toList();
+  }
+
+  @Override
+  public List<Usuario> seguidosDe(Usuario usuario) {
+    return relaciones.stream().filter(s -> s.esSeguidoPor(usuario.id()))
                      .map(s -> new Usuario(s.getSeguidoId())).toList();
   }
 }

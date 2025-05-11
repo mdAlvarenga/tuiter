@@ -2,7 +2,7 @@ package com.challenge.tuiter.aplicacion.seguimiento;
 
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.usuario.Usuario;
-import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoriaDeConsulta;
+import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BuscadorDeSeguidoresTest {
-  private SeguimientosEnMemoriaDeConsulta repositorio;
+  private SeguimientosEnMemoria repositorio;
   private BuscadorDeSeguidores buscador;
 
   @BeforeEach
   void setUp() {
-    repositorio = new SeguimientosEnMemoriaDeConsulta();
+    repositorio = new SeguimientosEnMemoria();
     buscador = new BuscadorDeSeguidores(repositorio);
   }
 
@@ -27,7 +27,7 @@ class BuscadorDeSeguidoresTest {
     repositorio.registrar(Seguimiento.nuevo("juan", "ana"));
     repositorio.registrar(Seguimiento.nuevo("juan", "pablo"));
 
-    var seguidores = buscador.buscarSeguidosDe("juan");
+    var seguidores = buscador.buscarSeguidosDe(new Usuario("juan"));
 
     assertEquals(Stream.of(new Usuario("ana"), new Usuario("pablo")).sorted().toList(),
       seguidores.stream().sorted().toList());
@@ -35,7 +35,25 @@ class BuscadorDeSeguidoresTest {
 
   @Test
   void devuelveListaVaciaSiElUsuarioNoSigueANadie() {
-    List<Usuario> seguidores = buscador.buscarSeguidosDe("juan");
+    List<Usuario> seguidores = buscador.buscarSeguidosDe(new Usuario("juan"));
+
+    assertTrue(seguidores.isEmpty());
+  }
+
+  @Test
+  void devuelveListaOrdenadaAlfabeticamenteDeSeguidoresDeUnUsuario() {
+    repositorio.registrar(Seguimiento.nuevo("ana", "juan"));
+    repositorio.registrar(Seguimiento.nuevo("pablo", "juan"));
+
+    var seguidores = buscador.buscarSeguidoresDe(new Usuario("juan"));
+
+    assertEquals(Stream.of(new Usuario("ana"), new Usuario("pablo")).sorted().toList(),
+      seguidores.stream().sorted().toList());
+  }
+
+  @Test
+  void devuelveListaVaciaSiElUsuarioTieneSeguidores() {
+    List<Usuario> seguidores = buscador.buscarSeguidoresDe(new Usuario("juan"));
 
     assertTrue(seguidores.isEmpty());
   }

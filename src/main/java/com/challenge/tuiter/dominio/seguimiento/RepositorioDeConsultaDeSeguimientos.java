@@ -8,5 +8,7 @@ public interface RepositorioDeConsultaDeSeguimientos {
 
   boolean existe(RelacionDeSeguimiento relacion);
 
-  List<Usuario> seguidosPor(String seguidorId);
+  List<Usuario> seguidoresDe(Usuario usuario);
+
+  List<Usuario> seguidosDe(Usuario usuario);
 }

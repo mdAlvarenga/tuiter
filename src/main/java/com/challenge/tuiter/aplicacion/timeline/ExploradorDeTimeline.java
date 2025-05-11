@@ -17,8 +17,7 @@ public class ExploradorDeTimeline {
   }
 
   public List<Tuit> explorarPara(Usuario usuario) {
-    List<Usuario> seguidos = repoSeguimientos.seguidosPor(usuario.id());
-    return repoTimeline.timelineDe(seguidos).stream().sorted((t1, t2) -> t2.esPosteriorA(t1))
+    return repoTimeline.timelineDe(usuario).stream().sorted((t1, t2) -> t2.esPosteriorA(t1))
                        .toList();
   }
 }

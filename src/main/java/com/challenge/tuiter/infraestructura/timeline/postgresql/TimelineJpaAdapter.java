@@ -17,14 +17,14 @@ public class TimelineJpaAdapter implements RepositorioDeConsultaDeTimeline, Repo
   }
 
   @Override
-  public void agregarTuit(Tuit tuit) {
-    TimelineTuitEntity entidad = TimelineMapper.aEntidad(tuit, tuit.getAutor());
+  public void publicarTuit(Usuario propietario, Tuit tuit) {
+    TimelineTuitEntity entidad = TimelineMapper.aEntidad(tuit, propietario);
     jpa.save(entidad);
   }
 
   @Override
-  public List<Tuit> timelineDe(List<Usuario> autoresIds) {
-    List<String> ids = autoresIds.stream().map(Usuario::id).toList();
-    return jpa.findAllByPropietarioIdIn(ids).stream().map(TimelineMapper::aDominio).toList();
+  public List<Tuit> timelineDe(Usuario usuario) {
+    List<TimelineTuitEntity> entidades = jpa.findAllByPropietarioId(usuario.id());
+    return entidades.stream().map(TimelineMapper::aDominio).toList();
   }
 }

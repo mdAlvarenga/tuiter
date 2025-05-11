@@ -29,8 +29,14 @@ public class SeguimientosJpaAdapter implements RepositorioDeConsultaDeSeguimient
   }
 
   @Override
-  public List<Usuario> seguidosPor(String seguidorId) {
-    return jpa.findBySeguidorId(seguidorId).stream().map(e -> new Usuario(e.getSeguidoId()))
+  public List<Usuario> seguidoresDe(Usuario usuario) {
+    return jpa.findBySeguidoId(usuario.id()).stream().map(e -> new Usuario(e.getSeguidorId()))
+              .toList();
+  }
+
+  @Override
+  public List<Usuario> seguidosDe(Usuario usuario) {
+    return jpa.findBySeguidorId(usuario.id()).stream().map(e -> new Usuario(e.getSeguidoId()))
               .toList();
   }
 }

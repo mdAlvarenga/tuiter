@@ -44,9 +44,9 @@ public class ControladorDeSeguimientos {
   @GetMapping("/{usuarioId}/seguidos")
   public ResponseEntity<List<UsuarioSeguidoDTO>> verUsuariosSeguidos(
     @PathVariable String usuarioId) {
-    List<Usuario> seguidos = buscador.buscarSeguidosDe(usuarioId);
-    List<UsuarioSeguidoDTO> respuesta = seguidos.stream()
-                                                .map(usuario -> new UsuarioSeguidoDTO(usuario.id()))
+    var usuario = new Usuario(usuarioId);
+    List<Usuario> seguidos = buscador.buscarSeguidosDe(usuario);
+    List<UsuarioSeguidoDTO> respuesta = seguidos.stream().map(u -> new UsuarioSeguidoDTO(u.id()))
                                                 .toList();
     return ResponseEntity.ok(respuesta);
   }

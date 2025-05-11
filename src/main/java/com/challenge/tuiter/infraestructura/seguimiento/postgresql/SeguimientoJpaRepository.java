@@ -8,5 +8,7 @@ import java.util.UUID;
 public interface SeguimientoJpaRepository extends JpaRepository<SeguimientoEntidad, UUID> {
   boolean existsBySeguidorIdAndSeguidoId(String seguidorId, String seguidoId);
 
+  List<SeguimientoEntidad> findBySeguidoId(String seguidoId);
+
   List<SeguimientoEntidad> findBySeguidorId(String seguidorId);
 }

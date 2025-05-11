@@ -10,17 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TimelineEnMemoriaDeConsulta implements RepositorioDeConsultaDeTimeline, RepositorioDeEscrituraDeTimeline {
+public class RepositorioDeTimelineEnMemoria implements RepositorioDeConsultaDeTimeline, RepositorioDeEscrituraDeTimeline {
   private final Map<Usuario, List<Tuit>> timelines = new HashMap<>();
 
   @Override
-  public List<Tuit> timelineDe(List<Usuario> autores) {
-    return autores.stream().flatMap(autor -> timelines.getOrDefault(autor, List.of()).stream())
-                  .toList();
+  public List<Tuit> timelineDe(Usuario usuario) {
+    return timelines.getOrDefault(usuario, List.of());
   }
 
-  public void agregarTuit(Tuit tuit) {
-    Usuario autor = tuit.getAutor();
-    timelines.computeIfAbsent(autor, k -> new ArrayList<>()).add(tuit);
+  public void publicarTuit(Usuario propietario, Tuit tuit) {
+    timelines.computeIfAbsent(propietario, k -> new ArrayList<>()).add(tuit);
   }
 }

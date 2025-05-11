@@ -28,11 +28,15 @@ public class Seguimiento {
     return new Seguimiento(id, seguidorId, seguidoId);
   }
 
-  public boolean esSeguidor(String otroSeguidorId) {
-    return seguidorId.equals(otroSeguidorId);
-  }
-
   public String seguimientoId() {
     return id.toString();
+  }
+
+  public boolean esSeguidorDe(String otroSeguidoId) {
+    return seguidoId.equals(otroSeguidoId);
+  }
+
+  public boolean esSeguidoPor(String otroSeguidorId) {
+    return seguidorId.equals(otroSeguidorId);
   }
 }

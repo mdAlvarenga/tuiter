@@ -48,16 +48,17 @@ class TimelineJpaAdapterTest {
 
   @Test
   void guardaYConsultaTuitsEnTimeline() {
+    Usuario propietario = new Usuario("propietario");
     Usuario juan = new Usuario("juan");
     Usuario ana = new Usuario("ana");
 
     Tuit tuit1 = Tuit.nuevo(juan, "Hola soy juan", reloj);
     Tuit tuit2 = Tuit.nuevo(ana, "Hola soy ana", reloj);
 
-    repoEscritura.agregarTuit(tuit1);
-    repoEscritura.agregarTuit(tuit2);
+    repoEscritura.publicarTuit(propietario, tuit1);
+    repoEscritura.publicarTuit(propietario, tuit2);
 
-    List<Tuit> timeline = repoConsulta.timelineDe(List.of(juan, ana));
+    List<Tuit> timeline = repoConsulta.timelineDe(propietario);
     assertEquals(2, timeline.size());
 
     List<String> contenidos = timeline.stream().map(Tuit::getContenido).toList();
