@@ -4,7 +4,6 @@ import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 
 public class TimelineMapper {
-
   public static TimelineTuitEntity aEntidad(Tuit tuit, Usuario propietario) {
     return new TimelineTuitEntity(tuit.getId(), tuit.getAutor().id(), propietario.id(),
       tuit.getContenido(), tuit.getInstanteDeCreacion());

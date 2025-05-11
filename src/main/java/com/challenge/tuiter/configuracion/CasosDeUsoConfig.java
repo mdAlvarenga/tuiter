@@ -1,7 +1,12 @@
 package com.challenge.tuiter.configuracion;
 
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
+import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
+import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
+import com.challenge.tuiter.infraestructura.seguimiento.postgresql.SeguimientosJpaAdapter;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitJpaRepository;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitsJpaAdapter;
 import org.springframework.boot.CommandLineRunner;
@@ -31,10 +36,26 @@ public class CasosDeUsoConfig {
   }
 
   @Bean
+  public SeguidorDeUsuarios seguidorDeUsuarios(SeguimientosJpaAdapter adapter) {
+    return new SeguidorDeUsuarios(adapter, adapter);
+  }
+
+  @Bean
+  public RepositorioDeRegistroDeSeguimientos repoRegistroDeSeguimientos(SeguimientosJpaAdapter adapter) {
+    return adapter;
+  }
+
+  @Bean
+  public BuscadorDeSeguidores buscadorDeSeguidores(RepositorioDeConsultaDeSeguimientos repositorio) {
+    return new BuscadorDeSeguidores(repositorio);
+  }
+
+  @Bean
   public CommandLineRunner runner(ApplicationContext ctx) {
     return args -> {
       System.out.println("¿Publicador? " + ctx.containsBeanDefinition("publicadorDeTuits"));
-      System.out.println("¿TuitsJpaAdapter? " + ctx.getBeansOfType(RepositorioDeGuardadoTuits.class));
+      System.out.println(
+        "¿TuitsJpaAdapter? " + ctx.getBeansOfType(RepositorioDeGuardadoTuits.class));
       System.out.println("¿TuitJpaRepository? " + ctx.getBeansOfType(TuitJpaRepository.class));
     };
   }

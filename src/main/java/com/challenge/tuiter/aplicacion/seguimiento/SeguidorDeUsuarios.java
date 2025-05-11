@@ -15,7 +15,7 @@ public class SeguidorDeUsuarios {
     this.repoConsultas = repoConsultas;
   }
 
-  public void seguirDesde(PeticionDeSeguimiento peticion) {
+  public Seguimiento seguirDesde(PeticionDeSeguimiento peticion) {
     if (peticion.seguidorId().equals(peticion.seguidoId())) {
       throw new SeguimientoInvalidoException("No podés seguirte a vos mismo");
     }
@@ -27,6 +27,8 @@ public class SeguidorDeUsuarios {
       throw new SeguimientoInvalidoException("Ya lo estás siguiendo");
     }
 
-    repoRegistro.registrar(Seguimiento.nuevo(peticion.seguidorId(), peticion.seguidoId()));
+    Seguimiento seguimiento = Seguimiento.nuevo(peticion.seguidorId(), peticion.seguidoId());
+    repoRegistro.registrar(seguimiento);
+    return seguimiento;
   }
 }

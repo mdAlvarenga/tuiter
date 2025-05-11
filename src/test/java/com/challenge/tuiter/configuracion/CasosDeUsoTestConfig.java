@@ -1,6 +1,8 @@
 package com.challenge.tuiter.configuracion;
 
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
+import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
+import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -23,7 +25,17 @@ public class CasosDeUsoTestConfig {
   }
 
   @Bean
-  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, Clock clock) {
+  public PublicadorDeTuits publicadorDeTuits() {
     return Mockito.mock(PublicadorDeTuits.class);
+  }
+
+  @Bean
+  public SeguidorDeUsuarios seguidorDeUsuarios() {
+    return Mockito.mock(SeguidorDeUsuarios.class);
+  }
+
+  @Bean
+  public BuscadorDeSeguidores buscadorDeSeguidores() {
+    return Mockito.mock(BuscadorDeSeguidores.class);
   }
 }

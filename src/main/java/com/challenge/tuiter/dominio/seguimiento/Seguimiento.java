@@ -24,11 +24,15 @@ public class Seguimiento {
     return new Seguimiento(UUID.randomUUID(), seguidorId, seguidoId);
   }
 
-  public static Seguimiento desde(String seguidorId, String seguidoId) {
-    return new Seguimiento(UUID.randomUUID(), seguidorId, seguidoId);
+  public static Seguimiento desde(UUID id, String seguidorId, String seguidoId) {
+    return new Seguimiento(id, seguidorId, seguidoId);
   }
 
   public boolean esSeguidor(String otroSeguidorId) {
     return seguidorId.equals(otroSeguidorId);
+  }
+
+  public String seguimientoId() {
+    return id.toString();
   }
 }
