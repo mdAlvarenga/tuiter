@@ -1,12 +1,15 @@
 package com.challenge.tuiter.infraestructura.timeline.postgresql;
 
+import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.infraestructura.errores.ManejadorDeErrores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -24,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Testcontainers
+@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class})
 @ActiveProfiles("test")
 class TimelineJpaAdapterTest {
   @Container

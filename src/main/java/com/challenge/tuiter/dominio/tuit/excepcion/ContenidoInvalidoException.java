@@ -1,6 +1,8 @@
 package com.challenge.tuiter.dominio.tuit.excepcion;
 
-public class ContenidoInvalidoException extends RuntimeException {
+import com.challenge.tuiter.dominio.excepcion.ExcepcionDeDominio;
+
+public class ContenidoInvalidoException extends ExcepcionDeDominio {
   public ContenidoInvalidoException(String mensaje) {
     super(mensaje);
   }

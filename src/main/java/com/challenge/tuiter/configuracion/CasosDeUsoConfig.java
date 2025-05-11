@@ -8,10 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Clock;
 
 @Configuration
+@Profile("!test")
 public class CasosDeUsoConfig {
   @Bean
   public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, Clock clock) {

@@ -1,6 +1,8 @@
 package com.challenge.tuiter.dominio.seguimiento.excepcion;
 
-public class SeguimientoInvalidoException extends RuntimeException {
+import com.challenge.tuiter.dominio.excepcion.ExcepcionDeDominio;
+
+public class SeguimientoInvalidoException extends ExcepcionDeDominio {
   public SeguimientoInvalidoException(String mensaje) {
     super(mensaje);
   }

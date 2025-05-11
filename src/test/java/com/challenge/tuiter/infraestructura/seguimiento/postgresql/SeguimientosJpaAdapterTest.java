@@ -1,13 +1,16 @@
 package com.challenge.tuiter.infraestructura.seguimiento.postgresql;
 
+import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
 import com.challenge.tuiter.dominio.seguimiento.RelacionDeSeguimiento;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.infraestructura.errores.ManejadorDeErrores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -22,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Testcontainers
+@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class, SeguimientosJpaAdapter.class})
 @ActiveProfiles("test")
 class SeguimientosJpaAdapterTest {
   public static final String SEGUIDOR = "juan";
