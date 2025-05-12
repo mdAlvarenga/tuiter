@@ -19,7 +19,7 @@ public class SeguimientosJpaAdapter implements RepositorioDeConsultaDeSeguimient
 
   @Override
   public void registrar(Seguimiento seguimiento) {
-    jpa.save(new SeguimientoEntidad(seguimiento.getId(), seguimiento.getSeguidorId(),
+    jpa.save(new SeguimientoEntity(seguimiento.getId(), seguimiento.getSeguidorId(),
       seguimiento.getSeguidoId()));
   }
 

@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "seguimientos")
-public class SeguimientoEntidad {
+public class SeguimientoEntity {
   @Id
   private UUID id;
 
