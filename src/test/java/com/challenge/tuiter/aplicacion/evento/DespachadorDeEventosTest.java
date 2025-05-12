@@ -17,8 +17,7 @@ class DespachadorDeEventosTest {
   @Test
   void despachaUnEventoConUnManejadorDisponible() {
     EventoDummy evento = new EventoDummy();
-    @SuppressWarnings("unchecked")
-    ManejadorDeEvento<EventoDummy> manejador = mock(
+    @SuppressWarnings("unchecked") ManejadorDeEvento<EventoDummy> manejador = mock(
       ManejadorDeEvento.class);
     when(manejador.tipoDeEvento()).thenReturn(EventoDummy.class);
 

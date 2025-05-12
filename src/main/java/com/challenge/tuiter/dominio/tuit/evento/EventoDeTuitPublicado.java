@@ -21,6 +21,6 @@ public record EventoDeTuitPublicado(String tuitId, String autorId, String conten
   }
 
   public Tuit aTuit() {
-    return Tuit.desde(UUID.fromString(tuitId), new Usuario(autorId),contenido,instante);
+    return Tuit.desde(UUID.fromString(tuitId), new Usuario(autorId), contenido, instante);
   }
 }

@@ -2,12 +2,11 @@ package com.challenge.tuiter.aplicacion.publicacion;
 
 import com.challenge.tuiter.aplicacion.evento.PublicadorDeEventos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
-import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.dominio.usuario.Usuario;
-import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,8 +16,13 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PublicadorDeTuitsTest {
   private RepositorioDeGuardadoTuits repositorio;
@@ -35,7 +39,8 @@ class PublicadorDeTuitsTest {
     repoSeguimiento = mock(RepositorioDeConsultaDeSeguimientos.class);
     publicador = mock(PublicadorDeEventos.class);
 
-    publicadorDeTuits = new PublicadorDeTuits(repositorio, repoTimeline, repoSeguimiento, publicador, fixedClock);
+    publicadorDeTuits = new PublicadorDeTuits(repositorio, repoTimeline, repoSeguimiento,
+      publicador, fixedClock);
   }
 
   @Test
@@ -99,7 +104,7 @@ class PublicadorDeTuitsTest {
     verify(publicador).publicar(captor.capture());
 
     Object eventoPublicado = captor.getValue();
-    assertTrue(eventoPublicado instanceof EventoDeTuitPublicado);
+    assertInstanceOf(EventoDeTuitPublicado.class, eventoPublicado);
 
     EventoDeTuitPublicado evento = (EventoDeTuitPublicado) eventoPublicado;
     assertEquals("ana", evento.autorId());
