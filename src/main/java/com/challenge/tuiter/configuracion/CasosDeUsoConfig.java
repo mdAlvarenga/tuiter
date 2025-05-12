@@ -1,5 +1,7 @@
 package com.challenge.tuiter.configuracion;
 
+import com.challenge.tuiter.aplicacion.evento.DespachadorDeEventos;
+import com.challenge.tuiter.aplicacion.evento.ManejadorDeEventoDeTuitPublicadoLog;
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
 import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
 import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
@@ -19,13 +21,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Clock;
+import java.util.List;
 
 @Configuration
 @Profile("!test")
 public class CasosDeUsoConfig {
   @Bean
-  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, Clock clock) {
-    return new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, clock);
+  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, DespachadorDeEventos despachador, Clock clock) {
+    return new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, despachador, clock);
   }
 
   @Bean
@@ -66,5 +69,10 @@ public class CasosDeUsoConfig {
         "¿TuitsJpaAdapter? " + ctx.getBeansOfType(RepositorioDeGuardadoTuits.class));
       System.out.println("¿TuitJpaRepository? " + ctx.getBeansOfType(TuitJpaRepository.class));
     };
+  }
+
+  @Bean
+  public DespachadorDeEventos despachadorDeEventos() {
+    return new DespachadorDeEventos(List.of(new ManejadorDeEventoDeTuitPublicadoLog()));
   }
 }

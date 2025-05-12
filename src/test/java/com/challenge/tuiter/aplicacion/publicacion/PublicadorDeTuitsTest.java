@@ -1,6 +1,9 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
+import com.challenge.tuiter.aplicacion.evento.DespachadorDeEventos;
+import com.challenge.tuiter.dominio.comun.evento.ManejadorDeEvento;
 import com.challenge.tuiter.dominio.tuit.Tuit;
+import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.infraestructura.memoria.GuardadoTuitsEnMemoria;
 import com.challenge.tuiter.infraestructura.memoria.RepositorioDeTimelineEnMemoria;
@@ -11,14 +14,21 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PublicadorDeTuitsTest {
   private GuardadoTuitsEnMemoria repositorio;
   private PublicadorDeTuits publicador;
+  private ManejadorDeEvento<EventoDeTuitPublicado> manejadorMock;
 
   @BeforeEach
   void setUp() {
@@ -27,7 +37,11 @@ class PublicadorDeTuitsTest {
     repositorio = new GuardadoTuitsEnMemoria();
     var timelineRepo = new RepositorioDeTimelineEnMemoria();
     var seguimientoRepo = new SeguimientosEnMemoria();
-    publicador = new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, fixedClock);
+    manejadorMock = mock(ManejadorDeEvento.class);
+    when(manejadorMock.tipoDeEvento()).thenReturn(EventoDeTuitPublicado.class);
+    var despchador = new DespachadorDeEventos(List.of(manejadorMock));
+    publicador = new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, despchador,
+      fixedClock);
   }
 
   @Test
@@ -79,5 +93,16 @@ class PublicadorDeTuitsTest {
     var peticion = new PeticionDePublicarTuit("autor", null);
 
     assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+  }
+
+  @Test
+  void alPublicarUnTuitSeDespachaElEventoDeTuitPublicado() {
+    var peticion = new PeticionDePublicarTuit("ana", "contenido");
+    when(manejadorMock.tipoDeEvento()).thenReturn(EventoDeTuitPublicado.class);
+
+    publicador.publicar(peticion);
+
+    verify(manejadorMock, times(1)).manejar(
+      argThat(evento -> evento.autorId().equals("ana") && evento.contenido().equals("contenido")));
   }
 }

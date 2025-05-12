@@ -13,12 +13,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SuppressWarnings("unchecked")
 class DespachadorDeEventosTest {
   @Test
   void despachaUnEventoConUnManejadorDisponible() {
     EventoDummy evento = new EventoDummy();
-    ManejadorDeEvento<EventoDummy> manejador = mock(ManejadorDeEvento.class);
+    @SuppressWarnings("unchecked")
+    ManejadorDeEvento<EventoDummy> manejador = mock(
+      ManejadorDeEvento.class);
     when(manejador.tipoDeEvento()).thenReturn(EventoDummy.class);
 
     var despachador = new DespachadorDeEventos(List.of(manejador));

@@ -1,5 +1,6 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
+import com.challenge.tuiter.aplicacion.evento.DespachadorDeEventos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
@@ -12,12 +13,14 @@ public class PublicadorDeTuits {
   private final RepositorioDeGuardadoTuits repositorio;
   private final RepositorioDeEscrituraDeTimeline timelineRepo;
   private final RepositorioDeConsultaDeSeguimientos seguimientoRepo;
+  private final DespachadorDeEventos despachador;
   private final Clock clock;
 
-  public PublicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, Clock clock) {
+  public PublicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, DespachadorDeEventos despachador, Clock clock) {
     this.repositorio = repositorio;
     this.timelineRepo = timelineRepo;
     this.seguimientoRepo = seguimientoRepo;
+    this.despachador = despachador;
     this.clock = clock;
   }
 
@@ -27,6 +30,8 @@ public class PublicadorDeTuits {
     this.repositorio.guardar(tuit);
     agregarATimelineDe(autor, tuit);
     avisarASeguidoresDe(autor, tuit);
+    despachador.despachar(tuit.eventosDominio());
+    tuit.limpiarEventos();
     return tuit;
   }
 
