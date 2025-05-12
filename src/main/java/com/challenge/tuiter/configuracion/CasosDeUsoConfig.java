@@ -14,12 +14,15 @@ import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.infraestructura.evento.ManejadorDeEventoDeTuitPublicadoLog;
 import com.challenge.tuiter.infraestructura.evento.PublicadorDeEventosSincrono;
+import com.challenge.tuiter.infraestructura.evento.kafka.EscuchadorDeTuitsPublicadosKafka;
+import com.challenge.tuiter.infraestructura.evento.kafka.PublicadorDeEventosKafka;
 import com.challenge.tuiter.infraestructura.seguimiento.postgresql.SeguimientosJpaAdapter;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitJpaRepository;
 import com.challenge.tuiter.infraestructura.tuit.postgresql.TuitsJpaAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.time.Clock;
 import java.util.List;
@@ -75,5 +78,15 @@ public class CasosDeUsoConfig {
   @Bean
   public ManejadorDeEventoDeTuitPublicadoLog manejadorDeEventoDeTuitPublicadoLog() {
     return new ManejadorDeEventoDeTuitPublicadoLog();
+  }
+
+  @Bean
+  public PublicadorDeEventosKafka publicadorDeEventosKafka(KafkaTemplate<String, Object> kafkaTemplate) {
+    return new PublicadorDeEventosKafka(kafkaTemplate);
+  }
+
+  @Bean
+  public EscuchadorDeTuitsPublicadosKafka escuchadorDeTuitsPublicadosKafka(RepositorioDeConsultaDeSeguimientos repositorio, RepositorioDeEscrituraDeTimeline timeline) {
+    return new EscuchadorDeTuitsPublicadosKafka(repositorio, timeline);
   }
 }

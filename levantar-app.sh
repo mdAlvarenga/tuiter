@@ -2,14 +2,14 @@
 
 set -e
 
-echo "Levanta db con Docker"
+echo "Levantando servicios necesarios..."
 docker compose down
-docker compose up -d postgres
+docker compose up -d postgres kafka zookeeper
 
-echo "Esperando hasta 20 seg que PostgreSQL esté listo..."
+echo "Esperando hasta 20 seg que PostgreSQL y Kafka estén listos..."
 for i in {1..20}; do
-  if nc -z localhost 5432; then
-    echo "PostgreSQL listo"
+  if nc -z localhost 5432 && nc -z localhost 9092; then
+    echo "PostgreSQL y Kafka listos"
     break
   fi
   echo "Esperando..."
