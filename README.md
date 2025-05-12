@@ -192,6 +192,15 @@ spring.kafka.producer.value-serializer=org.springframework.kafka.support.seriali
 
 ---
 
+## Escalabilidad y Balanceo de Carga
+
+La aplicación puede ejecutarse en múltiples instancias detrás de un balanceador de carga (por ejemplo, NGINX o AWS ELB). Para ello:
+
+- Asegúrese de configurar `server.forward-headers-strategy=framework`.
+- Existen endpoints de salud disponibles en `/actuator/health` para chequeos automáticos.
+
+---
+
 ### Documentación adicional
 
 En la [Wiki](https://github.com/mdAlvarenga/tuiter/wiki) se detallan aspectos técnicos del proyecto, incluyendo:
