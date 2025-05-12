@@ -1,10 +1,12 @@
-package com.challenge.tuiter.aplicacion.evento;
+package com.challenge.tuiter.infraestructura.evento;
 
 import com.challenge.tuiter.dominio.comun.evento.ManejadorDeEvento;
 import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class ManejadorDeEventoDeTuitPublicadoLog implements ManejadorDeEvento<EventoDeTuitPublicado> {
   @Override
   public void manejar(EventoDeTuitPublicado evento) {

@@ -1,76 +1,72 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-import com.challenge.tuiter.aplicacion.evento.DespachadorDeEventos;
-import com.challenge.tuiter.dominio.comun.evento.ManejadorDeEvento;
+import com.challenge.tuiter.aplicacion.evento.PublicadorDeEventos;
+import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
+import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
-import com.challenge.tuiter.infraestructura.memoria.GuardadoTuitsEnMemoria;
-import com.challenge.tuiter.infraestructura.memoria.RepositorioDeTimelineEnMemoria;
-import com.challenge.tuiter.infraestructura.memoria.SeguimientosEnMemoria;
+import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class PublicadorDeTuitsTest {
-  private GuardadoTuitsEnMemoria repositorio;
-  private PublicadorDeTuits publicador;
-  private ManejadorDeEvento<EventoDeTuitPublicado> manejadorMock;
+  private RepositorioDeGuardadoTuits repositorio;
+  private RepositorioDeEscrituraDeTimeline repoTimeline;
+  private RepositorioDeConsultaDeSeguimientos repoSeguimiento;
+  private PublicadorDeEventos publicador;
+  private PublicadorDeTuits publicadorDeTuits;
 
   @BeforeEach
   void setUp() {
     Clock fixedClock = Clock.fixed(Instant.parse("2025-05-01T12:00:00Z"), ZoneOffset.UTC);
+    repositorio = mock(RepositorioDeGuardadoTuits.class);
+    repoTimeline = mock(RepositorioDeEscrituraDeTimeline.class);
+    repoSeguimiento = mock(RepositorioDeConsultaDeSeguimientos.class);
+    publicador = mock(PublicadorDeEventos.class);
 
-    repositorio = new GuardadoTuitsEnMemoria();
-    var timelineRepo = new RepositorioDeTimelineEnMemoria();
-    var seguimientoRepo = new SeguimientosEnMemoria();
-    manejadorMock = mock(ManejadorDeEvento.class);
-    when(manejadorMock.tipoDeEvento()).thenReturn(EventoDeTuitPublicado.class);
-    var despchador = new DespachadorDeEventos(List.of(manejadorMock));
-    publicador = new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, despchador,
-      fixedClock);
+    publicadorDeTuits = new PublicadorDeTuits(repositorio, repoTimeline, repoSeguimiento, publicador, fixedClock);
   }
 
   @Test
   void publicaUnTuitYSeGeneraCorrectamente() {
     var peticion = new PeticionDePublicarTuit("autor", "Hola mundo");
 
-    Tuit tuit = publicador.publicar(peticion);
+    var tuit = publicadorDeTuits.publicar(peticion);
 
     assertEquals("autor", tuit.getAutorID());
     assertEquals("Hola mundo", tuit.getContenido());
-    assertTrue(repositorio.buscarPorId(tuit.getId().toString()).isPresent());
   }
 
   @Test
   void unUsuarioPublicaUnTuitYSeAgregaAlTimelineDelUsuarioCorrectamente() {
     var peticion = new PeticionDePublicarTuit("autor", "Hola mundo");
 
-    Tuit tuit = publicador.publicar(peticion);
+    var tuit = publicadorDeTuits.publicar(peticion);
 
-    assertTrue(repositorio.buscarPorId(tuit.getId().toString()).isPresent());
+    verify(repoTimeline).publicarTuit(new Usuario("autor"), tuit);
   }
 
   @Test
   void unUsuarioPublicaUnTuitYSeAgregaAlTimelineDeSusSeguidoresCorrectamente() {
     var peticion = new PeticionDePublicarTuit("autor", "Hola mundo");
 
-    Tuit tuit = publicador.publicar(peticion);
+    var seguidor = new Usuario("seguidor1");
+    when(repoSeguimiento.seguidoresDe(new Usuario("autor"))).thenReturn(List.of(seguidor));
 
-    assertTrue(repositorio.buscarPorId(tuit.getId().toString()).isPresent());
+    var tuit = publicadorDeTuits.publicar(peticion);
+
+    verify(repoTimeline).publicarTuit(seguidor, tuit);
   }
 
   @Test
@@ -78,31 +74,35 @@ class PublicadorDeTuitsTest {
     var largo = "a".repeat(281);
     var peticion = new PeticionDePublicarTuit("autor", largo);
 
-    assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+    assertThrows(ContenidoInvalidoException.class, () -> publicadorDeTuits.publicar(peticion));
   }
 
   @Test
   void lanzaExcepcionSiElContenidoEstaEnBlanco() {
     var peticion = new PeticionDePublicarTuit("autor", " ");
-
-    assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+    assertThrows(ContenidoInvalidoException.class, () -> publicadorDeTuits.publicar(peticion));
   }
 
   @Test
   void lanzaExcepcionSiElContenidoEsEstaVacio() {
     var peticion = new PeticionDePublicarTuit("autor", null);
-
-    assertThrows(ContenidoInvalidoException.class, () -> publicador.publicar(peticion));
+    assertThrows(ContenidoInvalidoException.class, () -> publicadorDeTuits.publicar(peticion));
   }
 
   @Test
-  void alPublicarUnTuitSeDespachaElEventoDeTuitPublicado() {
+  void alPublicarUnTuitSePublicaElEventoDeTuitPublicado() {
     var peticion = new PeticionDePublicarTuit("ana", "contenido");
-    when(manejadorMock.tipoDeEvento()).thenReturn(EventoDeTuitPublicado.class);
 
-    publicador.publicar(peticion);
+    publicadorDeTuits.publicar(peticion);
 
-    verify(manejadorMock, times(1)).manejar(
-      argThat(evento -> evento.autorId().equals("ana") && evento.contenido().equals("contenido")));
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    verify(publicador).publicar(captor.capture());
+
+    Object eventoPublicado = captor.getValue();
+    assertTrue(eventoPublicado instanceof EventoDeTuitPublicado);
+
+    EventoDeTuitPublicado evento = (EventoDeTuitPublicado) eventoPublicado;
+    assertEquals("ana", evento.autorId());
+    assertEquals("contenido", evento.contenido());
   }
 }

@@ -1,6 +1,6 @@
 package com.challenge.tuiter.aplicacion.publicacion;
 
-import com.challenge.tuiter.aplicacion.evento.DespachadorDeEventos;
+import com.challenge.tuiter.aplicacion.evento.PublicadorDeEventos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
@@ -13,14 +13,14 @@ public class PublicadorDeTuits {
   private final RepositorioDeGuardadoTuits repositorio;
   private final RepositorioDeEscrituraDeTimeline timelineRepo;
   private final RepositorioDeConsultaDeSeguimientos seguimientoRepo;
-  private final DespachadorDeEventos despachador;
+  private final PublicadorDeEventos publicador;
   private final Clock clock;
 
-  public PublicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, DespachadorDeEventos despachador, Clock clock) {
+  public PublicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo, PublicadorDeEventos publicador, Clock clock) {
     this.repositorio = repositorio;
     this.timelineRepo = timelineRepo;
     this.seguimientoRepo = seguimientoRepo;
-    this.despachador = despachador;
+    this.publicador = publicador;
     this.clock = clock;
   }
 
@@ -30,7 +30,7 @@ public class PublicadorDeTuits {
     this.repositorio.guardar(tuit);
     agregarATimelineDe(autor, tuit);
     avisarASeguidoresDe(autor, tuit);
-    despachador.despachar(tuit.eventosDominio());
+    tuit.eventosDominio().forEach(publicador::publicar);
     tuit.limpiarEventos();
     return tuit;
   }
