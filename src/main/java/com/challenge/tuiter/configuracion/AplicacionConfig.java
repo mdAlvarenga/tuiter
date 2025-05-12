@@ -1,6 +1,5 @@
 package com.challenge.tuiter.configuracion;
 
-import com.challenge.tuiter.aplicacion.evento.PublicadorDeEventos;
 import com.challenge.tuiter.aplicacion.publicacion.PublicadorDeTuits;
 import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
 import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
@@ -9,6 +8,8 @@ import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimien
 import com.challenge.tuiter.dominio.timeline.RepositorioDeConsultaDeTimeline;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
+import com.challenge.tuiter.aplicacion.evento.PublicadorDeEventos;
+
 import com.challenge.tuiter.infraestructura.seguimiento.postgresql.SeguimientosJpaAdapter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +22,12 @@ import java.time.Clock;
 @Profile("!test")
 public class AplicacionConfig {
   @Bean
-  public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo, RepositorioDeConsultaDeSeguimientos seguimientoRepo,
-                                             @Qualifier("publicadorDeEventosCompuesto")
-                                             PublicadorDeEventos publicador, Clock clock) {
+  public PublicadorDeTuits publicadorDeTuits(
+      RepositorioDeGuardadoTuits repositorio,
+      RepositorioDeEscrituraDeTimeline timelineRepo,
+      RepositorioDeConsultaDeSeguimientos seguimientoRepo,
+      @Qualifier("publicadorDeEventosCompuesto") PublicadorDeEventos publicador,
+      Clock clock) {
     return new PublicadorDeTuits(repositorio, timelineRepo, seguimientoRepo, publicador, clock);
   }
 
@@ -38,7 +42,9 @@ public class AplicacionConfig {
   }
 
   @Bean
-  public ExploradorDeTimeline exploradorDeTimeline(RepositorioDeConsultaDeTimeline repoTimeline, RepositorioDeConsultaDeSeguimientos repoSeguimientos) {
+  public ExploradorDeTimeline exploradorDeTimeline(
+      RepositorioDeConsultaDeTimeline repoTimeline,
+      RepositorioDeConsultaDeSeguimientos repoSeguimientos) {
     return new ExploradorDeTimeline(repoTimeline, repoSeguimientos);
   }
 

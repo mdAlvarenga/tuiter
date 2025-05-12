@@ -1,9 +1,10 @@
 #!/bin/bash
-
 set -e
 
-echo "Levantando servicios necesarios..."
+echo "Bajando servicios previos (si existen)..."
 docker compose down
+
+echo "Levantando servicios necesarios (Postgres, Kafka, Zookeeper)..."
 docker compose up -d postgres kafka zookeeper
 
 echo "Esperando hasta 20 seg que PostgreSQL y Kafka estén listos..."
@@ -16,11 +17,19 @@ for i in {1..20}; do
   sleep 1
 done
 
+# Asegurarse que la red fue creada
+echo "Verificando red Docker..."
+if ! docker network ls | grep -q "tuiter-red"; then
+  echo "ERROR: la red 'tuiter-red' no fue creada. Abortando."
+  docker network ls
+  exit 1
+fi
+
 echo "Compilar y empaquetar"
 ./gradlew clean bootJar
 
-echo "Empaqueta app"
+echo "Empaquetando imagen Docker..."
 docker build -t tuiter-app .
 
-echo "Levantar app"
-docker run --rm -p 8080:8080 --env-file .env tuiter-app
+echo "Ejecutando app conectada a red 'tuiter-red'"
+docker run --rm --network tuiter-red -p 8080:8080 --env-file .env tuiter-app
