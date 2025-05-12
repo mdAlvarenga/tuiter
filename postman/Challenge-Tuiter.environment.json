@@ -1,0 +1,14 @@
+{
+  "id": "bd7a99cd-2f4f-4ae2-9c27-bb179e20c82e",
+  "name": "Challenge-Tuiter",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-05-11T00:00:00.000Z",
+  "_postman_exported_using": "Postman/10.22.0"
+}

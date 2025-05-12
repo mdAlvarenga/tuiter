@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "3d774a33-faf8-48dc-919b-e1334734cfac",
+		"name": "Challenge-Tuiter",
+		"description": "Flujo completo: seguimientos + tuits desde CSV + consultas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3274681"
+	},
+	"item": [
+		{
+			"name": "Flujo completo",
+			"item": [
+				{
+					"name": "ana sigue a bruno",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seguidorId\": \"ana\",\n  \"seguidoId\": \"bruno\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seguimientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ana sigue a carla",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seguidorId\": \"ana\",\n  \"seguidoId\": \"carla\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seguimientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ana sigue a dario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seguidorId\": \"ana\",\n  \"seguidoId\": \"dario\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seguimientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ana sigue a elena",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seguidorId\": \"ana\",\n  \"seguidoId\": \"elena\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seguimientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publicar tuit desde CSV",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"autorId\": \"{{autorId}}\",\n  \"contenido\": \"Contenido aleatorio para {{autorId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tuits",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tuits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Timeline de ana",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/ana/timeline",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"ana",
+								"timeline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seguidos por ana",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seguimientos/ana/seguidos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos",
+								"ana",
+								"seguidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seguidores de bruno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seguimientos/bruno/seguidores",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"seguimientos",
+								"bruno",
+								"seguidores"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
