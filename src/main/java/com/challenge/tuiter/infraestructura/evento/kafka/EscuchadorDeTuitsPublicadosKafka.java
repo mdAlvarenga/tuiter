@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class EscuchadorDeTuitsPublicadosKafka {
   private final RepositorioDeConsultaDeSeguimientos repoSeguidores;
   private final RepositorioDeEscrituraDeTimeline repoTimeline;

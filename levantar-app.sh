@@ -4,20 +4,19 @@ set -e
 echo "Bajando servicios previos (si existen)..."
 docker compose down
 
-echo "Levantando servicios necesarios (Postgres, Kafka, Zookeeper)..."
-docker compose up -d postgres kafka zookeeper
+echo "Levantando servicios necesarios (Postgres, Kafka, Zookeeper, Redis)..."
+docker compose up -d postgres kafka zookeeper redis
 
-echo "Esperando hasta 20 seg que PostgreSQL y Kafka estén listos..."
+echo "Esperando hasta 20 seg que PostgreSQL, Kafka y Redis estén listos..."
 for i in {1..20}; do
-  if nc -z localhost 5432 && nc -z localhost 9092; then
-    echo "PostgreSQL y Kafka listos"
+  if nc -z localhost 5432 && nc -z localhost 9092 && nc -z localhost 6379; then
+    echo "PostgreSQL, Kafka y Redis listos"
     break
   fi
   echo "Esperando..."
   sleep 1
 done
 
-# Asegurarse que la red fue creada
 echo "Verificando red Docker..."
 if ! docker network ls | grep -q "tuiter-red"; then
   echo "ERROR: la red 'tuiter-red' no fue creada. Abortando."

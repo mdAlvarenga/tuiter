@@ -46,9 +46,20 @@ services:
     networks:
       - tuiter-red
 
+  redis:
+    image: redis:7.2
+    container_name: tuiter-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - tuiter-red
+
 volumes:
   pgdata:
   kafka-data:
+  redis-data:
 
 networks:
   tuiter-red:
