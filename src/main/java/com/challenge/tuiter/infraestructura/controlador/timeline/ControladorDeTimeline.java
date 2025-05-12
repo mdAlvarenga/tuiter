@@ -2,7 +2,7 @@ package com.challenge.tuiter.infraestructura.controlador.timeline;
 
 import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
 import com.challenge.tuiter.dominio.usuario.Usuario;
-import com.challenge.tuiter.infraestructura.controlador.usuario.dto.TuitDTO;
+import com.challenge.tuiter.infraestructura.controlador.timeline.dto.TuitDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

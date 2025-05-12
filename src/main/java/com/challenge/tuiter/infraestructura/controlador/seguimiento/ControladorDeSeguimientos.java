@@ -7,7 +7,7 @@ import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.controlador.seguimiento.dto.PeticionDeSeguirUsuarioDTO;
 import com.challenge.tuiter.infraestructura.controlador.seguimiento.dto.RespuestaSeguimientoDTO;
-import com.challenge.tuiter.infraestructura.controlador.seguimiento.dto.UsuarioSeguidoDTO;
+import com.challenge.tuiter.infraestructura.controlador.seguimiento.dto.UsuarioDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,14 +40,23 @@ public class ControladorDeSeguimientos {
     return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
   }
 
-
   @GetMapping("/{usuarioId}/seguidos")
-  public ResponseEntity<List<UsuarioSeguidoDTO>> verUsuariosSeguidos(
-    @PathVariable String usuarioId) {
+  public ResponseEntity<List<UsuarioDTO>> usuariosSeguidosPor(@PathVariable String usuarioId) {
     var usuario = new Usuario(usuarioId);
     List<Usuario> seguidos = buscador.buscarSeguidosDe(usuario);
-    List<UsuarioSeguidoDTO> respuesta = seguidos.stream().map(u -> new UsuarioSeguidoDTO(u.id()))
-                                                .toList();
+    List<UsuarioDTO> respuesta = mapperAUsuarioDto(seguidos);
     return ResponseEntity.ok(respuesta);
+  }
+
+  @GetMapping("/{usuarioId}/seguidores")
+  public ResponseEntity<List<UsuarioDTO>> verUsuariosSeguidos(@PathVariable String usuarioId) {
+    var usuario = new Usuario(usuarioId);
+    List<Usuario> seguidores = buscador.buscarSeguidoresDe(usuario);
+    List<UsuarioDTO> respuesta = mapperAUsuarioDto(seguidores);
+    return ResponseEntity.ok(respuesta);
+  }
+
+  private List<UsuarioDTO> mapperAUsuarioDto(List<Usuario> seguidores) {
+    return seguidores.stream().map(u -> new UsuarioDTO(u.id())).toList();
   }
 }

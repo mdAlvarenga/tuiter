@@ -81,4 +81,16 @@ class ControladorDeSeguimientosTest {
            .andExpect(jsonPath("$[0].usuarioId").value("carlos"))
            .andExpect(jsonPath("$[1].usuarioId").value("lucia"));
   }
+
+  @Test
+  void devuelveSeguidoresDeUnUsuario() throws Exception {
+    var usuario1 = new Usuario("carlos");
+    var usuario2 = new Usuario("lucia");
+
+    when(buscador.buscarSeguidoresDe(new Usuario("juan"))).thenReturn(List.of(usuario1, usuario2));
+
+    mockMvc.perform(get("/seguimientos/juan/seguidores")).andExpect(status().isOk())
+           .andExpect(jsonPath("$[0].usuarioId").value("carlos"))
+           .andExpect(jsonPath("$[1].usuarioId").value("lucia"));
+  }
 }

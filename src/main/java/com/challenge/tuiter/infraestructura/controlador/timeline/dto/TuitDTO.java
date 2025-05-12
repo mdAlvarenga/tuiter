@@ -1,4 +1,4 @@
-package com.challenge.tuiter.infraestructura.controlador.usuario.dto;
+package com.challenge.tuiter.infraestructura.controlador.timeline.dto;
 
 import java.time.Instant;
 

@@ -36,8 +36,6 @@ public class PublicadorDeTuits {
 
   private void avisarASeguidoresDe(Usuario autor, Tuit tuit) {
     var seguidores = seguimientoRepo.seguidoresDe(autor);
-    for (Usuario seguidor : seguidores) {
-      agregarATimelineDe(seguidor, tuit);
-    }
+    seguidores.forEach(seguidor -> {agregarATimelineDe(seguidor, tuit);});
   }
 }
