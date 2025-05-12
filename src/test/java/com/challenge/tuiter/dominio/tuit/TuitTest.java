@@ -1,5 +1,7 @@
 package com.challenge.tuiter.dominio.tuit;
 
+import com.challenge.tuiter.dominio.comun.evento.EventoDeDominio;
+import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import com.challenge.tuiter.dominio.tuit.excepcion.AutorInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.RelojInvalidoException;
@@ -10,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,5 +79,26 @@ class TuitTest {
     Tuit tuit = Tuit.nuevo(autor, contenido, clock);
 
     assertEquals(fixedInstant, tuit.getInstanteDeCreacion());
+  }
+
+  @Test
+  void alCrearseUnTuitRegistraUnEvento() {
+    var ahora = Instant.parse("2025-05-12T03:00:00Z");
+    var clock = Clock.fixed(ahora, ZoneOffset.UTC);
+    var autor = new Usuario("ana");
+
+
+    var tuit = Tuit.nuevo(autor, "hola mundo", clock);
+
+
+    List<EventoDeDominio> eventos = tuit.eventosDominio();
+    assertEquals(1, eventos.size());
+    assertThat(eventos.get(0)).isInstanceOf(EventoDeTuitPublicado.class);
+
+    var evento = (EventoDeTuitPublicado) eventos.get(0);
+    assertThat(evento.tuitId()).isEqualTo(tuit.getId().toString());
+    assertThat(evento.autorId()).isEqualTo("ana");
+    assertThat(evento.contenido()).isEqualTo("hola mundo");
+    assertThat(evento.instante()).isEqualTo(ahora);
   }
 }

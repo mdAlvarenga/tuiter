@@ -1,5 +1,7 @@
 package com.challenge.tuiter.dominio.tuit;
 
+import com.challenge.tuiter.dominio.comun.evento.EventoDeDominio;
+import com.challenge.tuiter.dominio.tuit.evento.EventoDeTuitPublicado;
 import com.challenge.tuiter.dominio.tuit.excepcion.AutorInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.ContenidoInvalidoException;
 import com.challenge.tuiter.dominio.tuit.excepcion.RelojInvalidoException;
@@ -8,6 +10,8 @@ import lombok.Value;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -17,6 +21,7 @@ public class Tuit {
   Usuario autor;
   String contenido;
   Instant instanteDeCreacion;
+  List<EventoDeDominio> eventos = new ArrayList<>();
 
   private Tuit(UUID id, Usuario autor, String contenido, Instant instanteDeCreacion) {
     if (autor == null) {
@@ -39,7 +44,13 @@ public class Tuit {
     if (clock == null) {
       throw new RelojInvalidoException();
     }
-    return new Tuit(UUID.randomUUID(), autor, contenido, Instant.now(clock));
+    UUID id = UUID.randomUUID();
+    Instant instanteDeCreacion = Instant.now(clock);
+    Tuit tuit = new Tuit(id, autor, contenido, instanteDeCreacion);
+    tuit.registrarEvento(
+      new EventoDeTuitPublicado(id.toString(), autor.id(), contenido, instanteDeCreacion));
+
+    return tuit;
   }
 
   public static Tuit desde(UUID id, Usuario usuario, String contenido, Instant instanteDeCreacion) {
@@ -56,5 +67,17 @@ public class Tuit {
 
   public int esPosteriorA(Tuit otroTuit) {
     return this.instanteDeCreacion.compareTo(otroTuit.instanteDeCreacion);
+  }
+
+  private void registrarEvento(EventoDeDominio evento) {
+    eventos.add(evento);
+  }
+
+  public List<EventoDeDominio> eventosDominio() {
+    return List.copyOf(eventos);
+  }
+
+  public void limpiarEventos() {
+    eventos.clear();
   }
 }
