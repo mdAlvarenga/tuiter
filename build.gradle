@@ -48,6 +48,40 @@ dependencies {
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
-tasks.named('test') {
+static def configurarTareaTest(Test task) {
+	task.testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+tasks.register('tests', Test) {
+	group = 'verification'
+	description = 'Ejecuta todos los tests'
 	useJUnitPlatform()
+	configurarTareaTest(it)
+}
+
+tasks.register('testsUnitarios', Test) {
+	group = 'verification'
+	description = 'Ejecuta solo los tests unitarios (excluye @Tag("integration"))'
+	useJUnitPlatform {
+		excludeTags 'integration'
+	}
+	configurarTareaTest(it)
+}
+
+tasks.register('testsIntegracion', Test) {
+	group = 'verification'
+	description = 'Ejecuta solo los tests de integración (@Tag("integration"))'
+	useJUnitPlatform {
+		includeTags 'integration'
+	}
+	configurarTareaTest(it)
+}
+
+tasks.named('test', Test) {
+	group = 'verification'
+	description = 'Tarea por defecto: ejecuta todos los tests'
+	useJUnitPlatform()
+	configurarTareaTest(it)
 }

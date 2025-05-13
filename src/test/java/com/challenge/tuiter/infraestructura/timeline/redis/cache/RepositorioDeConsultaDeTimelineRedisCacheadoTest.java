@@ -66,7 +66,9 @@ class RepositorioDeConsultaDeTimelineRedisCacheadoTest {
       List.of(objectMapper.writeValueAsString(TuitDto.desdeTuit(tuit1)),
         objectMapper.writeValueAsString(TuitDto.desdeTuit(tuit2))));
 
+
     List<Tuit> resultado = adapter.timelineDe(usuario);
+
 
     assertEquals(2, resultado.size());
     assertEquals(id1, resultado.get(0).getId());

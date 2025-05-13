@@ -29,10 +29,10 @@ Desarrollada en Java 17 con Spring Boot. Soporta publicación de tuits, seguimie
    ./gradlew bootRun --args='--spring.profiles.active=dev'
    ```
 
-2. Asegurarse de levantar Kafka manualmente (ver sección [Kafka](#kafka)):
+2. Asegurarse de levantar Kafka y postgres manualmente (ver sección [Kafka](#kafka)):
 
    ```bash
-   docker compose up -d kafka zookeeper
+   docker compose up -d 
    ```
 
 3. Los datos se reinician en cada ejecución (memoria volátil).
@@ -114,6 +114,39 @@ spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.seria
 spring.kafka.consumer.properties.spring.json.trusted.packages=com.challenge.tuiter.dominio.tuit.evento
 spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
 spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+```
+
+---
+
+## Ejecución de tests
+
+### Requisitos
+
+Para que todos los tests (unitarios e integración) se ejecuten correctamente, asegurate de tener:
+
+- Docker y Docker Compose instalados
+- Los servicios externos corriendo (PostgreSQL, Redis, Kafka)
+
+> Ya están pre configurados en `docker-compose.override.yml`, por lo que solo necesitás:
+
+```bash
+docker compose up -d
+```
+
+### Tareas de test disponibles ###
+
+| Tarea              | Descripción                                                                 |
+|--------------------|------------------------------------------------------------------------------|
+| `tests`            | Ejecuta todos los tests (unitarios e integración)                           |
+| `testsUnitarios`   | Ejecuta solo los tests unitarios, excluyendo los que tengan `@Tag("integration")` |
+| `testsIntegracion` | Ejecuta solo los tests de integración, es decir, los marcados con `@Tag("integration")` |
+
+### COmandos ###
+
+```
+./gradlew tests              # Todos los tests
+./gradlew testsUnitarios     # Solo tests unitarios
+./gradlew testsIntegracion   # Solo tests de integración
 ```
 
 ---
