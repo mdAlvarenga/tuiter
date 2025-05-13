@@ -1,6 +1,5 @@
 package com.challenge.tuiter.infraestructura.seguimiento.postgresql;
 
-import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
 import com.challenge.tuiter.dominio.seguimiento.RelacionDeSeguimiento;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeConsultaDeSeguimientos;
 import com.challenge.tuiter.dominio.seguimiento.RepositorioDeRegistroDeSeguimientos;
@@ -10,6 +9,7 @@ import com.challenge.tuiter.infraestructura.errores.ManejadorDeErrores;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 @SpringBootTest
 @Testcontainers
-@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class, SeguimientosJpaAdapter.class})
+@Import({ManejadorDeErrores.class, SeguimientosJpaAdapter.class})
 @ActiveProfiles("test")
 class SeguimientosJpaAdapterTest {
   public static final String SEGUIDOR = "juan";
@@ -36,6 +36,7 @@ class SeguimientosJpaAdapterTest {
   @Container
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
   @Autowired
+  @Qualifier("seguimientosJpaAdapter")
   RepositorioDeRegistroDeSeguimientos repoGuardar;
   @Autowired
   RepositorioDeConsultaDeSeguimientos repoConsulta;

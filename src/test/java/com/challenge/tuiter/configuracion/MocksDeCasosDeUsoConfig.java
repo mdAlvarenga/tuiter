@@ -9,39 +9,30 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
-
 @TestConfiguration
-public class CasosDeUsoTestConfig {
+public class MocksDeCasosDeUsoConfig {
   @Bean
-  public Clock fixedClock() {
-    return Clock.fixed(Instant.parse("2025-05-10T12:00:00Z"), ZoneOffset.UTC);
-  }
-
-  @Bean
-  public RepositorioDeGuardadoTuits repositorioFake() {
+  public RepositorioDeGuardadoTuits mockReporGuardadoTuits() {
     return Mockito.mock(RepositorioDeGuardadoTuits.class);
   }
 
   @Bean
-  public PublicadorDeTuits publicadorDeTuits() {
+  public PublicadorDeTuits mockPublicadorDeTuits() {
     return Mockito.mock(PublicadorDeTuits.class);
   }
 
   @Bean
-  public SeguidorDeUsuarios seguidorDeUsuarios() {
+  public SeguidorDeUsuarios mockSeguidorDeUsuarios() {
     return Mockito.mock(SeguidorDeUsuarios.class);
   }
 
   @Bean
-  public BuscadorDeSeguidores buscadorDeSeguidores() {
+  public BuscadorDeSeguidores mockBuscadorDeSeguidores() {
     return Mockito.mock(BuscadorDeSeguidores.class);
   }
 
   @Bean
-  public ExploradorDeTimeline exploradorDeTimeline() {
+  public ExploradorDeTimeline mockExploradorDeTimeline() {
     return Mockito.mock(ExploradorDeTimeline.class);
   }
 }

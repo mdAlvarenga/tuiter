@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Profile;
 import java.time.Clock;
 
 @Configuration
-@Profile("!test")
 public class AplicacionConfig {
   @Bean
   public PublicadorDeTuits publicadorDeTuits(RepositorioDeGuardadoTuits repositorio, RepositorioDeEscrituraDeTimeline timelineRepo,

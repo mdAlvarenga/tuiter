@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
-@Profile("!test")
 public class InfraestructuraConfig {
   @Bean
   public RepositorioDeGuardadoTuits repositorioDeGuardadoTuits(TuitJpaRepository jpa) {

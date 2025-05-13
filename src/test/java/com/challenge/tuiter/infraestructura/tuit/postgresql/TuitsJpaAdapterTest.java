@@ -1,6 +1,5 @@
 package com.challenge.tuiter.infraestructura.tuit.postgresql;
 
-import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
 import com.challenge.tuiter.dominio.tuit.RepositorioDeGuardadoTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
@@ -29,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 @SpringBootTest
 @Testcontainers
-@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class})
+@Import(ManejadorDeErrores.class)
 @ActiveProfiles("test")
 class TuitsJpaAdapterTest {
   @Container

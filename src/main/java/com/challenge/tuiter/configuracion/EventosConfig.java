@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 
 @Configuration
-@Profile("!test")
 public class EventosConfig {
   @Bean
   public DespachadorDeEventos despachadorDeEventos(List<ManejadorDeEvento<?>> manejadores) {

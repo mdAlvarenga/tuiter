@@ -1,7 +1,7 @@
 package com.challenge.tuiter.infraestructura.controlador.usuario;
 
 import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
-import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
+import com.challenge.tuiter.configuracion.MocksDeCasosDeUsoConfig;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.controlador.timeline.ControladorDeTimeline;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ControladorDeTimeline.class)
-@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class})
+@Import({MocksDeCasosDeUsoConfig.class, ManejadorDeErrores.class})
 class ControladorDeTimelineTest {
   @Autowired
   private MockMvc mockMvc;

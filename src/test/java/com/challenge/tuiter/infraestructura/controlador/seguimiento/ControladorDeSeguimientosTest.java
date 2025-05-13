@@ -3,7 +3,7 @@ package com.challenge.tuiter.infraestructura.controlador.seguimiento;
 import com.challenge.tuiter.aplicacion.seguimiento.BuscadorDeSeguidores;
 import com.challenge.tuiter.aplicacion.seguimiento.PeticionDeSeguimiento;
 import com.challenge.tuiter.aplicacion.seguimiento.SeguidorDeUsuarios;
-import com.challenge.tuiter.configuracion.CasosDeUsoTestConfig;
+import com.challenge.tuiter.configuracion.MocksDeCasosDeUsoConfig;
 import com.challenge.tuiter.dominio.seguimiento.Seguimiento;
 import com.challenge.tuiter.dominio.seguimiento.excepcion.SeguimientoInvalidoException;
 import com.challenge.tuiter.dominio.usuario.Usuario;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ControladorDeSeguimientos.class)
-@Import({CasosDeUsoTestConfig.class, ManejadorDeErrores.class})
+@Import({MocksDeCasosDeUsoConfig.class, ManejadorDeErrores.class})
 class ControladorDeSeguimientosTest {
   @Autowired
   private MockMvc mockMvc;
