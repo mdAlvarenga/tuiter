@@ -115,7 +115,7 @@ class RepositorioDeConsultaDeTimelineRedisCacheadoTest {
   @Test
   void timelineVacioDevuelveListaVacia() {
     Usuario usuario = new Usuario("pepe");
-    when(zsetOps.reverseRange("timeline:pepe", 0, 49)).thenReturn(Collections.emptySet());
+    when(zsetOps.reverseRange(ClaveDeTipo.TIMELINE.con("pepe"), 0, 49)).thenReturn(Collections.emptySet());
 
     List<Tuit> resultado = adapter.timelineDe(usuario);
 

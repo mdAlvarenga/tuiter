@@ -71,10 +71,8 @@ public class RepositorioDeConsultaDeTimelineRedisCacheado implements Repositorio
         idsFaltantes.add(UUID.fromString(idsList.get(i)));
       }
     }
-
     return new ResultadoJsonProcessing(tuits, idsFaltantes);
   }
-
 
   private Set<String> obtenerIdsDeTimeline(Usuario usuario) {
     var clave = ClaveDeTipo.TIMELINE.con(usuario.id());
@@ -94,8 +92,8 @@ public class RepositorioDeConsultaDeTimelineRedisCacheado implements Repositorio
   private void cachearTuits(List<Tuit> tuits) {
     tuits.forEach(t -> {
       try {
-        redis.opsForValue()
-             .set(ClaveDeTipo.TUIT.con(t.getId().toString()), objectMapper.writeValueAsString(t));
+        redis.opsForValue().set(ClaveDeTipo.TUIT.con(t.getId().toString()),
+          objectMapper.writeValueAsString(TuitDto.desdeTuit(t)));
       } catch (JsonProcessingException e) {
         log.warn("No se pudo cachear tuit {}", t.getId(), e);
       }

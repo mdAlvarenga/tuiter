@@ -1,6 +1,7 @@
 package com.challenge.tuiter.infraestructura.controlador.timeline;
 
 import com.challenge.tuiter.aplicacion.timeline.ExploradorDeTimeline;
+import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.controlador.timeline.dto.TuitResponseDTO;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,12 @@ public class ControladorDeTimeline {
 
   @GetMapping("/{id}/timeline")
   public List<TuitResponseDTO> obtenerTimeline(@PathVariable String id) {
-    return explorador.explorarPara(new Usuario(id)).stream().map(
+    List<Tuit> tuits = explorador.explorarPara(new Usuario(id));
+    return mapperListaDeResponseDTO(tuits);
+  }
+
+  private List<TuitResponseDTO> mapperListaDeResponseDTO(List<Tuit> tuis) {
+    return tuis.stream().map(
       t -> new TuitResponseDTO(t.getId().toString(), t.getContenido(), t.getAutorID(),
         t.getInstanteDeCreacion())).toList();
   }

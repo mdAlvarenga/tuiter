@@ -39,7 +39,7 @@ class TimelineRedisAdapterTest {
     var instante = Instant.parse("2025-01-01T12:00:00Z");
     var tuit = Tuit.desde(tuitId, usuario, "texto", instante);
 
-    var clave = "timeline:" + userId;
+    var clave = ClaveDeTipo.TIMELINE.con(userId.toString());
     var tuitStr = tuitId.toString();
     var score = (double) instante.getEpochSecond();
 
@@ -58,7 +58,7 @@ class TimelineRedisAdapterTest {
     var usuario = new Usuario(userId.toString());
     var tuit = Tuit.desde(tuitId, usuario, "contenido", instante);
 
-    var clave = "timeline:" + userId;
+    var clave = ClaveDeTipo.TIMELINE.con(userId.toString());
     var tuitStr = tuitId.toString();
 
     when(zsetOps.score(clave, tuitStr)).thenReturn(null);
@@ -82,7 +82,7 @@ class TimelineRedisAdapterTest {
     var instante = Instant.now();
     var tuit = Tuit.desde(tuitId, usuario, "texto", instante);
 
-    var clave = "timeline:" + userId;
+    var clave = ClaveDeTipo.TIMELINE.con(userId.toString());
     var tuitStr = tuitId.toString();
     var score = (double) instante.getEpochSecond();
 
@@ -102,13 +102,12 @@ class TimelineRedisAdapterTest {
     var usuario = new Usuario(userId.toString());
     var instante = Instant.now();
     var tuit = Tuit.desde(tuitId, usuario, "texto", instante);
-    var clave = "timeline:" + userId;
+    var clave = ClaveDeTipo.TIMELINE.con(userId.toString());
     var tuitStr = tuitId.toString();
     when(zsetOps.score(clave, tuitStr)).thenReturn(null);
 
     adapter.publicarTuit(usuario, tuit);
 
-    verify(zsetOps).removeRange("timeline:" + userId, 0, -1001);
+    verify(zsetOps).removeRange(clave, 0, -1001);
   }
-
 }

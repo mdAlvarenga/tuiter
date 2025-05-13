@@ -16,7 +16,7 @@ public class SeguidorDeUsuarios {
   }
 
   public Seguimiento seguirDesde(PeticionDeSeguimiento peticion) {
-    if (peticion.seguidorId().equals(peticion.seguidoId())) {
+    if (peticion.sigueASiMimo()) {
       throw new SeguimientoInvalidoException("No podés seguirte a vos mismo");
     }
 
