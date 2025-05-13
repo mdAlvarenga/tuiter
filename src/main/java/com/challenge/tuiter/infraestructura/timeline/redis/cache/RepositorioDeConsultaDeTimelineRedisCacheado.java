@@ -5,6 +5,7 @@ import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.timeline.dto.TuitDto;
+import com.challenge.tuiter.infraestructura.timeline.redis.CacheadorDeTuits;
 import com.challenge.tuiter.infraestructura.timeline.redis.ClaveDeTipo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +28,13 @@ public class RepositorioDeConsultaDeTimelineRedisCacheado implements Repositorio
   private final StringRedisTemplate redis;
   private final RepositorioDeBusquedaTuits repoPostgres;
   private final ObjectMapper objectMapper;
+  private final CacheadorDeTuits cacheador;
 
-  public RepositorioDeConsultaDeTimelineRedisCacheado(StringRedisTemplate redis, RepositorioDeBusquedaTuits repoPostgres, ObjectMapper objectMapper) {
+  public RepositorioDeConsultaDeTimelineRedisCacheado(StringRedisTemplate redis, RepositorioDeBusquedaTuits repoPostgres, ObjectMapper objectMapper, CacheadorDeTuits cacheador) {
     this.redis = redis;
     this.repoPostgres = repoPostgres;
     this.objectMapper = objectMapper;
+    this.cacheador = cacheador;
   }
 
   @Override
@@ -52,7 +55,7 @@ public class RepositorioDeConsultaDeTimelineRedisCacheado implements Repositorio
     if (resultado.existenIdsFaltantes()) {
       var desdeDb = repoPostgres.buscarTodosPorId(resultado.idsFaltantes());
       tuits.addAll(desdeDb);
-      cachearTuits(desdeDb);
+      cacheador.cachear(desdeDb);
     }
 
     var mapa = tuits.stream().collect(Collectors.toMap(Tuit::getId, t -> t));
@@ -87,17 +90,6 @@ public class RepositorioDeConsultaDeTimelineRedisCacheado implements Repositorio
       log.warn("Error al deserializar tuit cacheado", e);
       return Optional.empty();
     }
-  }
-
-  private void cachearTuits(List<Tuit> tuits) {
-    tuits.forEach(t -> {
-      try {
-        redis.opsForValue().set(ClaveDeTipo.TUIT.con(t.getId().toString()),
-          objectMapper.writeValueAsString(TuitDto.desdeTuit(t)));
-      } catch (JsonProcessingException e) {
-        log.warn("No se pudo cachear tuit {}", t.getId(), e);
-      }
-    });
   }
 
   private record ResultadoJsonProcessing(List<Tuit> tuits, List<UUID> idsFaltantes) {

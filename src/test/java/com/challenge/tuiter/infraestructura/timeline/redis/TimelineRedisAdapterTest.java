@@ -20,19 +20,20 @@ import static org.mockito.Mockito.when;
 
 class TimelineRedisAdapterTest {
   private ZSetOperations<String, String> zsetOps;
+  private CacheadorDeTuits cacheador;
   private TimelineRedisAdapter adapter;
 
   @BeforeEach
   void setUp() {
     StringRedisTemplate redisTemplate = mock(StringRedisTemplate.class);
     zsetOps = mock(ZSetOperations.class);
+    cacheador = mock(CacheadorDeTuits.class);
     when(redisTemplate.opsForZSet()).thenReturn(zsetOps);
-
-    adapter = new TimelineRedisAdapter(redisTemplate);
+    adapter = new TimelineRedisAdapter(redisTemplate, cacheador);
   }
 
   @Test
-  void publicaTuitEnRedisConClaveCorrecta() {
+  void publicaTuitEnRedisConClaveCorrectaYCachea() {
     var userId = UUID.randomUUID();
     var tuitId = UUID.randomUUID();
     var usuario = new Usuario(userId.toString());
@@ -48,6 +49,7 @@ class TimelineRedisAdapterTest {
     adapter.publicarTuit(usuario, tuit);
 
     verify(zsetOps).add(clave, tuitStr, score);
+    verify(cacheador).cachear(tuit);
   }
 
   @Test
@@ -63,9 +65,7 @@ class TimelineRedisAdapterTest {
 
     when(zsetOps.score(clave, tuitStr)).thenReturn(null);
 
-
     adapter.publicarTuit(usuario, tuit);
-
 
     ArgumentCaptor<Double> scoreCaptor = ArgumentCaptor.forClass(Double.class);
     verify(zsetOps).add(anyString(), anyString(), scoreCaptor.capture());
@@ -73,9 +73,8 @@ class TimelineRedisAdapterTest {
     assertEquals((double) instante.getEpochSecond(), scoreCaptor.getValue());
   }
 
-
   @Test
-  void noPublicaTuitDuplicadoEnTimeline() {
+  void noPublicaTuitDuplicadoNiLoCachea() {
     var userId = UUID.randomUUID();
     var tuitId = UUID.randomUUID();
     var usuario = new Usuario(userId.toString());
@@ -93,6 +92,7 @@ class TimelineRedisAdapterTest {
 
     verify(zsetOps, times(2)).score(clave, tuitStr);
     verify(zsetOps, times(1)).add(clave, tuitStr, score);
+    verify(cacheador, times(1)).cachear(tuit);
   }
 
   @Test

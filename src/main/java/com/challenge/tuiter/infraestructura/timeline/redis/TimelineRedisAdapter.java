@@ -11,9 +11,11 @@ public class TimelineRedisAdapter implements RepositorioDeEscrituraDeTimeline {
   private static final int MAX_TIMELINE = 1000;
 
   private final StringRedisTemplate redis;
+  private final CacheadorDeTuits cacheador;
 
-  public TimelineRedisAdapter(StringRedisTemplate redis) {
+  public TimelineRedisAdapter(StringRedisTemplate redis, CacheadorDeTuits cacheador) {
     this.redis = redis;
+    this.cacheador = cacheador;
   }
 
   @Override
@@ -30,5 +32,7 @@ public class TimelineRedisAdapter implements RepositorioDeEscrituraDeTimeline {
 
     redis.opsForZSet().add(propietario, tuitId, puntaje);
     redis.opsForZSet().removeRange(propietario, 0, -MAX_TIMELINE - 1);
+
+    cacheador.cachear(tuit);
   }
 }
