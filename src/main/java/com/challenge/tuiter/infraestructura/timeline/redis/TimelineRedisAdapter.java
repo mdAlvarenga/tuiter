@@ -18,7 +18,7 @@ public class TimelineRedisAdapter implements RepositorioDeEscrituraDeTimeline {
 
   @Override
   public void publicarTuit(Usuario usuario, Tuit tuit) {
-    String propietario = "timeline:" + usuario.id();
+    String propietario = ClaveDeTipo.TIMELINE.con(usuario.id());
     String tuitId = tuit.getId().toString();
     double puntaje = tuit.getInstanteDeCreacion().getEpochSecond();
 

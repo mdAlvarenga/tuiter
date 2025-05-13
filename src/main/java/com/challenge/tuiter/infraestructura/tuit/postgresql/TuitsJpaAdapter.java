@@ -6,6 +6,7 @@ import com.challenge.tuiter.dominio.tuit.Tuit;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,5 +28,10 @@ public class TuitsJpaAdapter implements RepositorioDeGuardadoTuits, RepositorioD
   @Override
   public Optional<Tuit> buscarPorId(String id) {
     return jpa.findById(UUID.fromString(id)).map(TuitMapper::aDominio);
+  }
+
+  @Override
+  public List<Tuit> buscarTodosPorId(List<UUID> orden) {
+    return jpa.findAllById(orden).stream().map(TuitMapper::aDominio).toList();
   }
 }
