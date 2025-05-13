@@ -38,8 +38,8 @@ public class AplicacionConfig {
   }
 
   @Bean
-  public ExploradorDeTimeline exploradorDeTimeline(RepositorioDeConsultaDeTimeline repoTimeline, RepositorioDeConsultaDeSeguimientos repoSeguimientos) {
-    return new ExploradorDeTimeline(repoTimeline, repoSeguimientos);
+  public ExploradorDeTimeline exploradorDeTimeline(RepositorioDeConsultaDeTimeline repoTimeline) {
+    return new ExploradorDeTimeline(repoTimeline);
   }
 
   @Bean

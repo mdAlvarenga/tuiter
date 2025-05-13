@@ -27,7 +27,7 @@ class ExploradorDeTimelineTest {
   void setUp() {
     repoDeTimeLine = new RepositorioDeTimelineEnMemoria();
     repoDeSeguimientos = new SeguimientosEnMemoria();
-    explorador = new ExploradorDeTimeline(repoDeTimeLine, repoDeSeguimientos);
+    explorador = new ExploradorDeTimeline(repoDeTimeLine);
   }
 
   @Test
