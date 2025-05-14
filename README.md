@@ -72,12 +72,12 @@ Desarrollada en Java 17 con Spring Boot. Soporta publicación de tuits, seguimie
    ```
 
 2. Este script:
-   - Apaga servicios previos
-   - Levanta contenedores de PostgreSQL, Kafka y Zookeeper
-   - Espera que estén listos
-   - Compila el JAR
-   - Construye la imagen Docker (`tuiter-app`)
-   - Ejecuta el contenedor
+    - Apaga servicios previos
+    - Levanta contenedores de PostgreSQL, Kafka y Zookeeper
+    - Espera que estén listos
+    - Compila el JAR
+    - Construye la imagen Docker (`tuiter-app`)
+    - Ejecuta el contenedor
 
 3. Para limpiar volúmenes e imagen:
    ```bash
@@ -124,8 +124,7 @@ spring.kafka.producer.value-serializer=org.springframework.kafka.support.seriali
 
 Para que todos los tests (unitarios e integración) se ejecuten correctamente, asegurate de tener:
 
-- Docker y Docker Compose instalados
-- Los servicios externos corriendo (PostgreSQL, Redis, Kafka)
+- Solo se requiere tener Docker instalado y en ejecución. No es necesario levantar Redis, PostgreSQL ni Kafka manualmente.
 
 > Ya están pre configurados en `docker-compose.override.yml`, por lo que solo necesitás:
 
@@ -133,7 +132,7 @@ Para que todos los tests (unitarios e integración) se ejecuten correctamente, a
 docker compose up -d
 ```
 
-### Tareas de test disponibles ###
+### Tareas de test disponibles
 
 | Tarea              | Descripción                                                                 |
 |--------------------|------------------------------------------------------------------------------|
@@ -141,12 +140,52 @@ docker compose up -d
 | `testsUnitarios`   | Ejecuta solo los tests unitarios, excluyendo los que tengan `@Tag("integration")` |
 | `testsIntegracion` | Ejecuta solo los tests de integración, es decir, los marcados con `@Tag("integration")` |
 
-### COmandos ###
+### Comandos
 
-```
+```bash
 ./gradlew tests              # Todos los tests
 ./gradlew testsUnitarios     # Solo tests unitarios
 ./gradlew testsIntegracion   # Solo tests de integración
+```
+
+### Tests de integración con Testcontainers
+
+Los tests de integración utilizan **Testcontainers** para levantar entornos reales de Redis, PostgreSQL y Kafka de forma automática durante la ejecución de los tests.
+
+#### Servicios levantados por Testcontainers:
+
+| Servicio    | Imagen utilizada               | Puerto interno | Uso principal                                  |
+|-------------|--------------------------------|----------------|------------------------------------------------|
+| Redis       | redis:7-alpine                 | 6379           | Cache y timeline de usuarios                   |
+| PostgreSQL  | postgres:15                    | 5432           | Persistencia de tuits y relaciones             |
+| Kafka       | confluentinc/cp-kafka:7.5.0    | 9092           | Publicación de eventos de dominio (tuits)      |
+
+#### Configuración
+
+- Los contenedores se configuran en la clase base `BaseIntegrationTest`, que:
+    - Expone los puertos dinámicos al entorno de Spring Boot.
+    - Registra las propiedades dinámicamente con `@DynamicPropertySource`.
+    - Desactiva la autoconfiguración de Redis (`@EnableAutoConfiguration(exclude = ...)`).
+    - Usa una clase `RedisTestConfig` para registrar `RedisConnectionFactory` y `RedisTemplate` en base a los valores obtenidos desde los contenedores.
+
+#### Estructura de los tests
+
+- Los tests de integración extienden de `BaseIntegrationTest`.
+- Se anotan con `@Tag("integration")` para permitir su ejecución selectiva.
+- Usan `WebTestClient` para simular interacciones HTTP reales con la API.
+- Se testean escenarios completos como:
+    - Seguimiento entre usuarios.
+    - Publicación de tuits.
+    - Propagación del fan-out al timeline del seguidor.
+
+#### Requisitos previos
+
+> No necesitás levantar ningún servicio manualmente para ejecutar los tests de integración, ya que Testcontainers se encarga de iniciarlos.
+
+#### Comando de ejecución (con logs visibles):
+
+```bash
+./gradlew testsIntegracion --info
 ```
 
 ---
@@ -184,22 +223,22 @@ docker compose up -d
 
 1. En `postman/` se incluyen:
 
-   - `Challenge-Tuiter.postman_collection.json`: colección completa
-   - `Challenge-Tuiter.environment.json`: entorno con `base_url`
-   - `tuits.csv`: datos de ejemplo
+    - `Challenge-Tuiter.postman_collection.json`: colección completa
+    - `Challenge-Tuiter.environment.json`: entorno con `base_url`
+    - `tuits.csv`: datos de ejemplo
 
 2. Para ejecutar el flujo:
 
-   - Importar colección y entorno en Postman
-   - Abrir el **Runner**
-   - Seleccionar la colección y el folder **Flujo completo**
-   - Cargar `tuits.csv` como archivo de datos
-   - Ejecutar el flujo completo
+    - Importar colección y entorno en Postman
+    - Abrir el **Runner**
+    - Seleccionar la colección y el folder **Flujo completo**
+    - Cargar `tuits.csv` como archivo de datos
+    - Ejecutar el flujo completo
 
 3. El flujo:
-   - `ana` sigue a `bruno`, `carla`, `dario`, `elena`
-   - Se publican 10 tuits por cada uno desde el CSV
-   - Se consulta el timeline y relaciones
+    - `ana` sigue a `bruno`, `carla`, `dario`, `elena`
+    - Se publican 10 tuits por cada uno desde el CSV
+    - Se consulta el timeline y relaciones
 
 ---
 
@@ -209,6 +248,7 @@ docker compose up -d
 .
 ├── .env
 ├── docker-compose.yml
+├── docker-compose.override.yml
 ├── Dockerfile
 ├── levantar-app.sh
 ├── limpiar.sh
@@ -218,8 +258,8 @@ docker compose up -d
 │   ├── tuits.csv
 │   └── datos-generados.md
 ├── src/
-│   ├── resources /Challenge-Tuiter.postman_collection.json
-│       └── logback-spring.xml
+│   ├── resources
+│   │   └── logback-spring.xml
 └── build.gradle
 ```
 
