@@ -1,4 +1,4 @@
-package com.challenge.tuiter.infraestructura.timeline.redis;
+package com.challenge.tuiter.infraestructura.timeline.redis.cache;
 
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;

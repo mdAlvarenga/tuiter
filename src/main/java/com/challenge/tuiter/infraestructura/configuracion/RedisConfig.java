@@ -1,7 +1,7 @@
 package com.challenge.tuiter.infraestructura.configuracion;
 
 import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
-import com.challenge.tuiter.infraestructura.timeline.redis.CacheadorDeTuits;
+import com.challenge.tuiter.infraestructura.timeline.redis.cache.CacheadorDeTuits;
 import com.challenge.tuiter.infraestructura.timeline.redis.TimelineRedisAdapter;
 import com.challenge.tuiter.infraestructura.timeline.redis.cache.RepositorioDeConsultaDeTimelineRedisCacheado;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,8 @@
-package com.challenge.tuiter.infraestructura.timeline.redis;
+package com.challenge.tuiter.infraestructura.timeline.redis.cache;
 
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.infraestructura.timeline.dto.TuitDto;
+import com.challenge.tuiter.infraestructura.timeline.redis.ClaveDeTipo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

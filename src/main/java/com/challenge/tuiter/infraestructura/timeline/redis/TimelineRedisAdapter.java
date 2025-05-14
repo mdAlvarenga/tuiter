@@ -3,6 +3,7 @@ package com.challenge.tuiter.infraestructura.timeline.redis;
 import com.challenge.tuiter.dominio.timeline.RepositorioDeEscrituraDeTimeline;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.infraestructura.timeline.redis.cache.CacheadorDeTuits;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 

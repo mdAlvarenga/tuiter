@@ -2,6 +2,7 @@ package com.challenge.tuiter.infraestructura.timeline.redis;
 
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
+import com.challenge.tuiter.infraestructura.timeline.redis.cache.CacheadorDeTuits;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

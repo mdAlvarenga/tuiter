@@ -5,7 +5,6 @@ import com.challenge.tuiter.dominio.tuit.RepositorioDeBusquedaTuits;
 import com.challenge.tuiter.dominio.tuit.Tuit;
 import com.challenge.tuiter.dominio.usuario.Usuario;
 import com.challenge.tuiter.infraestructura.timeline.dto.TuitDto;
-import com.challenge.tuiter.infraestructura.timeline.redis.CacheadorDeTuits;
 import com.challenge.tuiter.infraestructura.timeline.redis.ClaveDeTipo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
